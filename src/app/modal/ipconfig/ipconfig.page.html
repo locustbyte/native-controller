@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar style="padding: 20px">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="dismiss();">
+        <ion-icon class="white-text" name="chevron-down-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      <span>
+        <img
+          style="width: 50px; vertical-align: middle"
+          src="assets/images/NETFLIX-icon.png"
+        />Netflix</span
+      >
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="no-scroll">
+  <ion-row class="text-center">
+    <ion-col>
+      <div class="modal-title">Title</div>
+      <div title="modal-sub-title">Sub title</div>
+    </ion-col>
+  </ion-row>
+  <ion-row class="text-center">
+    <ion-col>
+      <div class="netflix-poster">
+        <img src="assets/images/NETFLIX.jpg" />
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row class="text-center">
+    <ion-col offset-4>
+      <div><img src="assets/images/rewind-30-icon.png" /></div>
+    </ion-col>
+    <ion-col offset-4>
+      <div><img width="30px" src="assets/images/pause.png" /></div>
+    </ion-col>
+    <ion-col offset-4>
+      <div><img src="assets/images/stop.png" /></div>
+    </ion-col>
+  </ion-row>
+</ion-content>

@@ -1,0 +1,300 @@
+<ion-header>
+  <ion-toolbar style="padding: 20px">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="dismiss();">
+        <ion-icon class="white-text" name="chevron-down-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      <span *ngIf="specificAppData.appName == 'Microsoft Teams'"
+        ><img
+          style="width: 50px; vertical-align: middle"
+          src="assets/images/TEAMS-icon.png"
+        />{{specificAppData.appName}}</span
+      >
+      <span *ngIf="specificAppData.appName == 'Powerpoint'"
+        ><img
+          style="width: 50px; vertical-align: middle"
+          src="assets/images/POWERPOINT-icon.png"
+        />{{specificAppData.appName}}</span
+      >
+      <span *ngIf="specificAppData.appName == 'Netflix'"
+        ><img
+          style="width: 50px; vertical-align: middle"
+          src="assets/images/NETFLIX-icon.png"
+        />{{specificAppData.appName}}</span
+      >
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="no-scroll">
+  <div *ngIf="specificAppData.appName == 'PowerPoint'">
+    <ion-row class="text-center">
+      <ion-col class="touch-icon">
+        <div class="modal-title">Title</div>
+        <div title="modal-sub-title">Last saved</div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="text-center pp-boxes">
+      <ion-col offset-4>
+        <div (click)="ppPlayFromStart();">Play from start</div>
+      </ion-col>
+      <ion-col offset-4>
+        <div (click)="ppPlayFromCurrentSlide();">Play from current slide</div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="text-center pp-boxes">
+      <ion-col offset-4> <div (click)="ppSave();">Save</div> </ion-col>
+      <ion-col offset-4> <div (click)="ppPrint();">Print</div> </ion-col>
+    </ion-row>
+    <ion-row class="text-center pp-boxes">
+      <ion-col offset-4> <div (click)="ppNewSlide();">New slide</div> </ion-col>
+      <ion-col offset-4>
+        <div (click)="ppDuplicateSlide();">Duplicate slide</div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="text-center pp-boxes">
+      <ion-col offset-4>
+        <div class="blank"><img src="assets/images/add-icon.png" /></div
+      ></ion-col>
+    </ion-row>
+  </div>
+  <div *ngIf="specificAppData.appName == 'Microsoft Teams'">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p>Team Catchup</p>
+        <p>02:41</p>
+      </div>
+    </div>
+    <ion-row class="text-center">
+      <ion-col offset-4>
+        <div>
+          <img
+            class="touch-icon"
+            *ngIf="hand == false"
+            src="assets/images/microsoft-teams/raise-hand.png"
+            (click)="switchHand();"
+          />
+          <img
+            class="touch-icon"
+            *ngIf="hand == true"
+            src="assets/images/microsoft-teams/raise-hand-on.png"
+            (click)="switchHand();"
+          />
+          <p *ngIf="hand == false">Raise Hand</p>
+          <p *ngIf="hand == true">Lower Hand</p>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          <img
+            class="touch-icon"
+            src="assets/images/microsoft-teams/leave-meeting.png"
+            (click)="leaveMeeting();"
+          />
+          <p>Leave Meeting</p>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="text-center">
+      <ion-col offset-4>
+        <div>
+          <img
+            class="touch-icon"
+            *ngIf="mic == false"
+            src="assets/images/microsoft-teams/mute-mic.png"
+            (click)="switchMic();"
+          />
+          <img
+            class="touch-icon"
+            *ngIf="mic == true"
+            src="assets/images/microsoft-teams/unmute-mic.png"
+            (click)="switchMic();"
+          />
+          <p *ngIf="mic == true">Unmute Mic</p>
+          <p *ngIf="mic == false">Mute Mic</p>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          <img
+            class="touch-icon"
+            *ngIf="camera == false"
+            src="assets/images/microsoft-teams/camera-off.png"
+            (click)="switchCamera();"
+          />
+          <img
+            class="touch-icon"
+            *ngIf="camera == true"
+            src="assets/images/microsoft-teams/camera-on.png"
+            (click)="switchCamera();"
+          />
+          <p *ngIf="camera == false">Turn Camera Off</p>
+          <p *ngIf="camera == true">Turn Camera On</p>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-range value="20">
+            <ion-icon
+              slot="start"
+              size="small"
+              name="volume-low-outline"
+            ></ion-icon>
+
+            <ion-icon slot="end" name="volume-high-outline"></ion-icon>
+          </ion-range>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </div>
+  <div *ngIf="specificAppData.appName == 'Netflix'">
+    <ion-row class="text-center">
+      <ion-col>
+        <div class="modal-title">Title</div>
+        <div title="modal-sub-title">Sub title</div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="text-center">
+      <ion-col>
+        <div class="netflix-poster">
+          <img src="assets/images/NETFLIX.jpg" />
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="text-center">
+      <ion-col offset-4>
+        <div (click)="netflixRewind();">
+          <img src="assets/images/rewind-30-icon.png" />
+        </div>
+      </ion-col>
+      <ion-col offset-4>
+        <div (click)="netflixPause();">
+          <img width="30px" src="assets/images/pause.png" />
+        </div>
+      </ion-col>
+      <ion-col offset-4>
+        <div (click)="netflixStop();"><img src="assets/images/stop.png" /></div>
+      </ion-col>
+    </ion-row>
+  </div>
+  <!-- <div *ngIf="app[1].id == 'SPOTIFY'">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p>[Title]</p>
+        <p>[Artist]</p>
+      </div>
+    </div>
+    <div style="text-align: center">
+      <img width="160" src="assets/images/spotify-playing.jpg" />
+    </div>
+    <ion-row class="text-center">
+      <ion-col offset-4>
+        <div>
+          <img
+            style="width: 50px; height: 50px"
+            src="assets/images/rewind.png"
+            (click)="switchHand();"
+          />
+        </div>
+      </ion-col>
+      <ion-col offset-4>
+        <div>
+          <img
+            style="width: 40px; height: 50px"
+            class="touch-icon"
+            src="assets/images/pause.png"
+            (click)="switchHand();"
+          />
+        </div>
+      </ion-col>
+      <ion-col offset-4>
+        <div>
+          <img
+            style="width: 50px; height: 50px"
+            class="touch-icon"
+            src="assets/images/forward.png"
+            (click)="switchHand();"
+          />
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-range value="20">
+            <ion-icon
+              slot="start"
+              size="small"
+              name="volume-low-outline"
+            ></ion-icon>
+
+            <ion-icon slot="end" name="volume-high-outline"></ion-icon>
+          </ion-range>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </div>
+  <div *ngIf="app[1].id == 'SPOTIFY'">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p>[Title]</p>
+        <p>[Artist]</p>
+      </div>
+    </div>
+    <div style="text-align: center">
+      <img width="160" src="assets/images/spotify-playing.jpg" />
+    </div>
+    <ion-row class="text-center">
+      <ion-col offset-4>
+        <div>
+          <img
+            style="width: 50px; height: 50px"
+            src="assets/images/rewind.png"
+            (click)="switchHand();"
+          />
+        </div>
+      </ion-col>
+      <ion-col offset-4>
+        <div>
+          <img
+            style="width: 40px; height: 50px"
+            class="touch-icon"
+            src="assets/images/pause.png"
+            (click)="switchHand();"
+          />
+        </div>
+      </ion-col>
+      <ion-col offset-4>
+        <div>
+          <img
+            style="width: 50px; height: 50px"
+            class="touch-icon"
+            src="assets/images/forward.png"
+            (click)="switchHand();"
+          />
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-range value="20">
+            <ion-icon
+              slot="start"
+              size="small"
+              name="volume-low-outline"
+            ></ion-icon>
+
+            <ion-icon slot="end" name="volume-high-outline"></ion-icon>
+          </ion-range>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </div> -->
+</ion-content>

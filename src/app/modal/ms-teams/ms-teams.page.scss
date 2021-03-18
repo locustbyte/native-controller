@@ -1,0 +1,104 @@
+.text-center {
+    text-align: center;
+    margin: 0 auto;
+}
+ion-range {
+    --bar-background: transparent;
+
+    --background: transparent;
+    --background-activated: transparent;
+    --background-focused: transparent;
+    --background-hover: transparent;
+    --background-activated-opacity: 0.12;
+    --background-focused-opacity: 0.15;
+    --background-hover-opacity: 0.04;
+}
+ion-toolbar {
+    --background: transparent !important;
+    --border-color: transparent;
+    height: 90px;
+}
+.white-text {
+    color: white;
+}
+.netflix-poster {
+    img {
+        width: 70%;
+    }
+}
+.pp-boxes {
+    div {
+        margin: 10px;
+        background: rgb(50, 126, 179);
+        padding: 20px;
+        height: 80px;
+        border-radius: 10px;
+        &.blank {
+            background: transparent;
+        }
+    }
+}
+.toolbar-background {
+    border: 0 !important;
+}
+.touch-icon {
+    width: 100px;
+}
+.custom-toolbar {
+    background: black;
+    padding: 20px;
+    .toolbar-container {
+        padding: 50px !important;
+    }
+}
+.sc-ion-modal-ios-h {
+    height: 100% !important;
+    bottom: 0;
+    width: 100%;
+    margin: 0 auto;
+
+    margin-top: 0px;
+    .modal-wrapper {
+        margin-top: 150px;
+        border-radius: 40px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+}
+ion-item::part(native) {
+    .item-inner {
+        padding: 0;
+        border: 0;
+    }
+    background-color: transparent;
+    padding: 0;
+}
+main::part(scroll) {
+    overflow: hidden i !important;
+}
+:root {
+    ion-range {
+        --bar-background: transparent;
+
+        --background: transparent;
+        --background-activated: transparent;
+        --background-focused: transparent;
+        --background-hover: transparent;
+        --background-activated-opacity: 0.12;
+        --background-focused-opacity: 0.15;
+        --background-hover-opacity: 0.04;
+    }
+    ion-toolbar {
+        ion-title {
+            padding: 0;
+        }
+        .toolbar-container {
+            padding: 50px;
+        }
+        &:last-child {
+            .toolbar-background {
+                box-shadow: var(--box-shadow);
+            }
+        }
+    }
+}
