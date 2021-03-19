@@ -11,9 +11,9 @@ import { GlobalConstants } from '../../global-constants';
 })
 export class MsTeamsPage implements OnInit {
 
-  mic = false;
-  camera = false;
-  hand = false;
+  mic = localStorage.getItem("teamsMic");;
+  camera = localStorage.getItem("teamsCamera");
+  hand = localStorage.getItem("teamsHand");
   commandData = {
     appId: '',
     windowId: '',
@@ -37,7 +37,6 @@ export class MsTeamsPage implements OnInit {
   getSpecificApp(app) {
     this.apiService.getSpecificAppDetail(app).subscribe((data: any[]) => {
       this.specificAppData = data;
-      console.log(this.specificAppData)
     })
   }
   doExecuteCommand(params) {
@@ -56,8 +55,15 @@ export class MsTeamsPage implements OnInit {
     this.doExecuteCommand(myOpt);
   }
   switchMic() {
+    if (localStorage.getItem("teamsMic") == "false") {
+      localStorage.setItem("teamsMic", "true")
+      this.mic = "true"
+    } else {
+      localStorage.setItem("teamsMic", "false")
+      this.mic = "false"
+    }
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    this.mic = !this.mic;
+    // this.mic = !this.mic;
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -67,8 +73,15 @@ export class MsTeamsPage implements OnInit {
     this.doExecuteCommand(myOpt);
   }
   switchCamera() {
+    if (localStorage.getItem("teamsCamera") == "false") {
+      localStorage.setItem("teamsCamera", "true")
+      this.camera = "true"
+    } else {
+      localStorage.setItem("teamsCamera", "false")
+      this.camera = "false"
+    }
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    this.camera = !this.camera;
+    // this.camera = !this.camera;
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -78,8 +91,16 @@ export class MsTeamsPage implements OnInit {
     this.doExecuteCommand(myOpt);
   }
   switchHand() {
+    if (localStorage.getItem("teamsHand") == "false" || !localStorage.getItem("teamsHand")) {
+      localStorage.setItem("teamsHand", "true")
+      this.hand = "true"
+    } else {
+      localStorage.setItem("teamsHand", "false")
+      this.hand = "false"
+    }
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    this.hand = !this.hand;
+    // this.hand = !this.hand;
+    // this.hand = true
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -92,7 +113,7 @@ export class MsTeamsPage implements OnInit {
   //Powerpoint
   ppPlayFromStart() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    this.hand = !this.hand;
+
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -103,7 +124,7 @@ export class MsTeamsPage implements OnInit {
   }
   ppPlayFromCurrentSlide() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    this.hand = !this.hand;
+
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -114,7 +135,7 @@ export class MsTeamsPage implements OnInit {
   }
   ppPrint() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    this.hand = !this.hand;
+
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -125,7 +146,6 @@ export class MsTeamsPage implements OnInit {
   }
   ppSave() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    this.hand = !this.hand;
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -136,7 +156,6 @@ export class MsTeamsPage implements OnInit {
   }
   ppNewSlide() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    this.hand = !this.hand;
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -147,7 +166,6 @@ export class MsTeamsPage implements OnInit {
   }
   ppDuplicateSlide() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    this.hand = !this.hand;
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -160,7 +178,7 @@ export class MsTeamsPage implements OnInit {
   //Netflix
   netflixRewind() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    this.hand = !this.hand;
+
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -171,7 +189,7 @@ export class MsTeamsPage implements OnInit {
   }
   netflixPause() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    this.hand = !this.hand;
+
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -182,7 +200,7 @@ export class MsTeamsPage implements OnInit {
   }
   netflixStop() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    this.hand = !this.hand;
+
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -195,6 +213,20 @@ export class MsTeamsPage implements OnInit {
 
 
   ngOnInit() {
+
+    if (!localStorage.getItem("teamsHand") == true) {
+      localStorage.setItem("teamsHand", "false")
+      this.hand = "false"
+    }
+    if (!localStorage.getItem("teamsCamera") == true) {
+      localStorage.setItem("teamsCamera", "false")
+      this.camera = "false"
+    }
+    if (!localStorage.getItem("teamsMic") == true) {
+      localStorage.setItem("teamsMic", "false")
+      this.mic = "false"
+    }
+
     this.commandData = JSON.parse(localStorage.getItem('currentAppID'));
     // Initial call to get running apps
     this.getSpecificApp(this.commandData)

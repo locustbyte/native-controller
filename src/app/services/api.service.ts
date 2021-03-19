@@ -48,7 +48,6 @@ export class ApiService {
   }
 
   public getSpecificAppDetail(app) {
-    console.log(app)
     return this.httpClient.get(this.globals.REST_API_SERVER + "/apps/running/" + app.appID + "?windowId=" + app.windowsID)
   }
 

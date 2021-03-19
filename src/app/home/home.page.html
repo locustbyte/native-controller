@@ -1,12 +1,3 @@
-<!-- <ion-toolbar class="custom-toolbar">
-  <ion-buttons slot="start">
-    <ion-back-button>TANGOO</ion-back-button>
-  </ion-buttons>
-
-  <div style="padding: 30px">
-    <ion-title> Active Windows ({{theRunningAppsSorted.length}}) </ion-title>
-  </div>
-</ion-toolbar> -->
 <ion-toolbar class="custom-toolbar">
   <ion-buttons slot="start">
     <ion-button (click)="presentIPModal();">
@@ -14,7 +5,9 @@
     </ion-button>
   </ion-buttons>
 
-  <ion-title>Active Apps ({{theRunningAppsSorted.length}})</ion-title>
+  <ion-title class="text-center"
+    >Active Apps ({{appsSingular.length + appsMultiple.length}})</ion-title
+  >
 </ion-toolbar>
 <ion-content [fullscreen]="true">
   <div id="container">
@@ -30,10 +23,10 @@
           />
         </ion-col>
         <ion-col size="10" style="text-align: left">
-          <p style="color: white; font-size: 16px">
-            {{appSingular.value[0].appName}}
+          <p class="app-title">{{appSingular.value[0].appName}}</p>
+          <p class="app-description" *ngIf="appSingular.value.length > 1">
+            {{appSingular.value.length}} open window
           </p>
-          <p style="color: grey">{{appSingular.value.length}} open window</p>
         </ion-col>
       </ion-row>
 
@@ -41,7 +34,7 @@
 
       <ion-slides
         [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }"
-        class="horizontal-slides m-b-100 height-auto"
+        class="horizontal-slides height-auto"
       >
         <ion-slide
           *ngFor="let appSingularInstance of appSingular.value | keyvalue; let appInstance=index"
@@ -106,7 +99,7 @@
       <!-- SLIDES -->
       <ion-slides
         [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }"
-        class="horizontal-slides m-b-100 height-auto"
+        class="horizontal-slides height-auto"
       >
         <ion-slide
           *ngFor="let appMultipleInstance of appMultiple.value[0].windows | keyvalue; let appMultipleKey=index"

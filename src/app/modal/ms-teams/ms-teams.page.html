@@ -5,7 +5,7 @@
         <ion-icon class="white-text" name="chevron-down-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>
+    <ion-title class="text-center">
       <span *ngIf="specificAppData.appName == 'Microsoft Teams'"
         ><img
           style="width: 50px; vertical-align: middle"
@@ -25,6 +25,9 @@
         />{{specificAppData.appName}}</span
       >
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="dismiss();"> </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -72,18 +75,18 @@
         <div>
           <img
             class="touch-icon"
-            *ngIf="hand == false"
+            *ngIf="hand == 'false'"
             src="assets/images/microsoft-teams/raise-hand.png"
             (click)="switchHand();"
           />
           <img
             class="touch-icon"
-            *ngIf="hand == true"
+            *ngIf="hand == 'true'"
             src="assets/images/microsoft-teams/raise-hand-on.png"
             (click)="switchHand();"
           />
-          <p *ngIf="hand == false">Raise Hand</p>
-          <p *ngIf="hand == true">Lower Hand</p>
+          <p *ngIf="hand == 'false'">Raise Hand</p>
+          <p *ngIf="hand == 'true'">Lower Hand</p>
         </div>
       </ion-col>
       <ion-col>
@@ -102,41 +105,41 @@
         <div>
           <img
             class="touch-icon"
-            *ngIf="mic == false"
+            *ngIf="mic == 'false'"
             src="assets/images/microsoft-teams/mute-mic.png"
             (click)="switchMic();"
           />
           <img
             class="touch-icon"
-            *ngIf="mic == true"
+            *ngIf="mic == 'true'"
             src="assets/images/microsoft-teams/unmute-mic.png"
             (click)="switchMic();"
           />
-          <p *ngIf="mic == true">Unmute Mic</p>
-          <p *ngIf="mic == false">Mute Mic</p>
+          <p *ngIf="mic == 'true'">Unmute Mic</p>
+          <p *ngIf="mic == 'false'">Mute Mic</p>
         </div>
       </ion-col>
       <ion-col>
         <div>
           <img
             class="touch-icon"
-            *ngIf="camera == false"
+            *ngIf="camera == 'false'"
             src="assets/images/microsoft-teams/camera-off.png"
             (click)="switchCamera();"
           />
           <img
             class="touch-icon"
-            *ngIf="camera == true"
+            *ngIf="camera == 'true'"
             src="assets/images/microsoft-teams/camera-on.png"
             (click)="switchCamera();"
           />
-          <p *ngIf="camera == false">Turn Camera Off</p>
-          <p *ngIf="camera == true">Turn Camera On</p>
+          <p *ngIf="camera == 'false'">Turn Camera Off</p>
+          <p *ngIf="camera == 'true'">Turn Camera On</p>
         </div>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col>
+      <ion-col class="the-range-slider-container">
         <ion-item>
           <ion-range value="20">
             <ion-icon
