@@ -25,3 +25,11 @@
 #container a {
   text-decoration: none;
 }
+.app-slide-description {
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: white !important;
+  font-size: 18px !important;
+}

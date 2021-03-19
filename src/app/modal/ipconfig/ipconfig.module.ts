@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { IpconfigPageRoutingModule } from './ipconfig-routing.module';
 
 import { IpconfigPage } from './ipconfig.page';
+import { GlobalConstants } from '../../global-constants';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { IpconfigPage } from './ipconfig.page';
     IonicModule,
     IpconfigPageRoutingModule
   ],
-  declarations: [IpconfigPage]
+  declarations: [IpconfigPage],
+  providers: [GlobalConstants],
 })
-export class IpconfigPageModule {}
+export class IpconfigPageModule { }

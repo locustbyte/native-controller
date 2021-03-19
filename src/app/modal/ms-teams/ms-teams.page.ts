@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { ApiService } from "../../services/api.service";
+import { GlobalConstants } from '../../global-constants';
 
 @Component({
   selector: 'app-ms-teams',
@@ -22,23 +23,25 @@ export class MsTeamsPage implements OnInit {
   specificAppData = {};
   @Input() app: number;
 
-  constructor(public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService) { }
+  constructor(public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
 
   dismiss() {
     this.modalController.dismiss({
       'dismissed': true
     })
   }
+
+
+
+  // Get window specific data
   getSpecificApp(app) {
-    console.log(app)
     this.apiService.getSpecificAppDetail(app).subscribe((data: any[]) => {
-      console.log(data);
       this.specificAppData = data;
+      console.log(this.specificAppData)
     })
   }
   doExecuteCommand(params) {
     this.apiService.executeCommand(params).subscribe((data: any[]) => {
-      console.log(data);
     })
   }
   //Teams
@@ -50,12 +53,10 @@ export class MsTeamsPage implements OnInit {
       command: "Leave"
     }
     myOpt.appCommand = "Leave"
-    console.log(myOpt)
     this.doExecuteCommand(myOpt);
   }
   switchMic() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    console.log(this.mic)
     this.mic = !this.mic;
     this.commandDataSend = {
       appId: this.commandData.appId,
@@ -63,12 +64,10 @@ export class MsTeamsPage implements OnInit {
       command: "Mute Unmute mic"
     }
     myOpt.appCommand = "Mute Unmute mic"
-    console.log(myOpt)
     this.doExecuteCommand(myOpt);
   }
   switchCamera() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    console.log(this.camera)
     this.camera = !this.camera;
     this.commandDataSend = {
       appId: this.commandData.appId,
@@ -76,7 +75,6 @@ export class MsTeamsPage implements OnInit {
       command: "Camera"
     }
     myOpt.appCommand = "Camera"
-    console.log(myOpt)
     this.doExecuteCommand(myOpt);
   }
   switchHand() {
@@ -88,7 +86,6 @@ export class MsTeamsPage implements OnInit {
       command: "Raise"
     }
     myOpt.appCommand = "Raise"
-    console.log(myOpt)
     this.doExecuteCommand(myOpt);
   }
 
@@ -102,7 +99,6 @@ export class MsTeamsPage implements OnInit {
       command: "PlayFromStart"
     }
     myOpt.appCommand = "PlayFromStart"
-    console.log(myOpt)
     this.doExecuteCommand(myOpt);
   }
   ppPlayFromCurrentSlide() {
@@ -114,7 +110,6 @@ export class MsTeamsPage implements OnInit {
       command: "PlayFromCurrentSlide"
     }
     myOpt.appCommand = "PlayFromCurrentSlide"
-    console.log(myOpt)
     this.doExecuteCommand(myOpt);
   }
   ppPrint() {
@@ -126,7 +121,6 @@ export class MsTeamsPage implements OnInit {
       command: "Print"
     }
     myOpt.appCommand = "Print"
-    console.log(myOpt)
     this.doExecuteCommand(myOpt);
   }
   ppSave() {
@@ -138,7 +132,6 @@ export class MsTeamsPage implements OnInit {
       command: "Save"
     }
     myOpt.appCommand = "Save"
-    console.log(myOpt)
     this.doExecuteCommand(myOpt);
   }
   ppNewSlide() {
@@ -150,7 +143,6 @@ export class MsTeamsPage implements OnInit {
       command: "NewSlide"
     }
     myOpt.appCommand = "NewSlide"
-    console.log(myOpt)
     this.doExecuteCommand(myOpt);
   }
   ppDuplicateSlide() {
@@ -162,7 +154,6 @@ export class MsTeamsPage implements OnInit {
       command: "DuplicateSlide"
     }
     myOpt.appCommand = "DuplicateSlide"
-    console.log(myOpt)
     this.doExecuteCommand(myOpt);
   }
 
@@ -176,7 +167,6 @@ export class MsTeamsPage implements OnInit {
       command: "Rewind10"
     }
     myOpt.appCommand = "Rewind10"
-    console.log(myOpt)
     this.doExecuteCommand(myOpt);
   }
   netflixPause() {
@@ -188,7 +178,6 @@ export class MsTeamsPage implements OnInit {
       command: "PlayPause"
     }
     myOpt.appCommand = "PlayPause"
-    console.log(myOpt)
     this.doExecuteCommand(myOpt);
   }
   netflixStop() {
@@ -200,7 +189,6 @@ export class MsTeamsPage implements OnInit {
       command: "Stop"
     }
     myOpt.appCommand = "Stop"
-    console.log(myOpt)
     this.doExecuteCommand(myOpt);
   }
 
@@ -208,7 +196,7 @@ export class MsTeamsPage implements OnInit {
 
   ngOnInit() {
     this.commandData = JSON.parse(localStorage.getItem('currentAppID'));
-    console.log(JSON.parse(localStorage.getItem('currentAppID')))
+    // Initial call to get running apps
     this.getSpecificApp(this.commandData)
   }
 
