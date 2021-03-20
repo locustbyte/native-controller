@@ -9,6 +9,7 @@ import { ApiService } from "../services/api.service";
 import { Identifiers } from '@angular/compiler/src/render3/r3_identifiers';
 import { GlobalConstants } from './../global-constants';
 
+
 class RunningProcesses {
   id: number;
   name: string;
@@ -17,6 +18,7 @@ class RunningProcesses {
 
 
 }
+
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -37,6 +39,8 @@ export class HomePage implements OnInit {
   theRunningAppsSorted = [];
   currentModal = null;
   randTest = []
+  dataReturned = []
+
 
   constructor(public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
 
@@ -52,10 +56,25 @@ export class HomePage implements OnInit {
       component: IpconfigPage,
       cssClass: 'my-custom-class'
     });
+    modal.onDidDismiss().then((dataReturned) => {
+      console.log(dataReturned.data.dismissed)
+      if (dataReturned !== null) {
+        if (dataReturned.data.dismissed == true) {
+          this.dataReturned = dataReturned.data;
+          this.appsSingular = []
+          this.appsMultiple = []
+          this.getRunningProcesses()
+        }
+
+        //alert('Modal Sent Data :'+ dataReturned);
+      }
+    });
     return await modal.present();
     this.currentModal = modal;
   }
   async presentModal(event) {
+    console.log(event)
+    this.doFocusWindow(event)
     localStorage.setItem('currentAppID', JSON.stringify(event));
     const modal = await this.modalController.create({
       component: MsTeamsPage,
@@ -64,10 +83,22 @@ export class HomePage implements OnInit {
         'app': event.path
       }
     });
+
     return await modal.present();
     this.currentModal = modal;
   }
 
+  shallShowModal(params) {
+    console.log(params)
+    if (params.appName == 'Microsoft Teams' || params.appName == 'Netflix' || params.appName == 'Powerpoint') {
+      this.doFocusWindow(params)
+      this.presentModal(params)
+    } else {
+      console.log("no commands")
+      this.doFocusWindow(params)
+    }
+
+  }
   getSnapshot(id) {
     this.apiService.getSnapshot(4128).subscribe((data: any[]) => {
       console.log(data);
@@ -77,9 +108,10 @@ export class HomePage implements OnInit {
 
 
   doFocusWindow(params) {
-    // this.apiService.doSetWindowFocus(params).subscribe((data: any[]) => {
-    //   console.log(data)
-    // })
+    console.log(params)
+    this.apiService.doSetWindowFocus(params).subscribe((data: any[]) => {
+      console.log(data)
+    })
   }
   getRunningProcesses() {
     this.apiService.getAppsRunning().subscribe((data: any[]) => {

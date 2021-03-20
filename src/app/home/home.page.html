@@ -15,130 +15,135 @@
       *ngFor="let appSingular of appsSingular | keyvalue; let appIndex=index"
     >
       <!-- SLIDE HEADER -->
-      <ion-row class="text-center">
-        <ion-col size="2">
-          <img
-            width="40px"
-            src="assets/images/{{appSingular.value[0].name}}-icon.png"
-          />
-        </ion-col>
-        <ion-col size="10" style="text-align: left">
-          <p class="app-title">{{appSingular.value[0].appName}}</p>
-          <p class="app-description" *ngIf="appSingular.value.length > 1">
-            {{appSingular.value.length}} open window
-          </p>
-        </ion-col>
-      </ion-row>
+      <div *ngIf="appSingular.value[0].name != 'TEXTINPUTHOST'">
+        <ion-row class="text-center">
+          <ion-col size="2">
+            <img
+              width="40px"
+              src="assets/images/{{appSingular.value[0].name}}-icon.png"
+            />
+          </ion-col>
+          <ion-col size="10" style="text-align: left">
+            <p class="app-title">{{appSingular.value[0].appName}}</p>
+            <p class="app-description" *ngIf="appSingular.value.length > 1">
+              {{appSingular.value.length}} open window(s)
+            </p>
+          </ion-col>
+        </ion-row>
 
-      <!-- SLIDES -->
+        <!-- SLIDES -->
 
-      <ion-slides
-        [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }"
-        class="horizontal-slides height-auto"
-      >
-        <ion-slide
-          *ngFor="let appSingularInstance of appSingular.value | keyvalue; let appInstance=index"
-          style="
-            width: 90%;
-            height: 280px;
-            border: 0px;
-            margin: 0;
-            margin-top: -40px;
-          "
+        <ion-slides
+          [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }"
+          class="horizontal-slides height-auto"
         >
-          <ion-col style="text-align: left">
-            <div *ngIf="appSingularInstance.value.windows.length != 0">
-              <div
-                class="recent-item"
-                [id]="appSingularInstance.value.id"
-                (click)="doFocusWindow({'appID': appSingularInstance.value.id, 'windowsID': appSingularInstance.value.windows[0].id});"
-              >
-                <img src="assets/images/{{appSingular.value[0].name}}.jpg" />
+          <ion-slide
+            *ngFor="let appSingularInstance of appSingular.value | keyvalue; let appInstance=index"
+            style="
+              width: 90%;
+              height: 280px;
+              border: 0px;
+              margin: 0;
+              margin-top: -40px;
+            "
+          >
+            <ion-col style="text-align: left">
+              <!--doFocusWindow (click)="doFocusWindow({'appID': appSingularInstance.value.id, 'windowsID': appSingularInstance.value.windows[0].id});"-->
+              <div *ngIf="appSingularInstance.value.windows.length != 0">
                 <div
-                  style="
-                    position: absolute;
-                    bottom: 9px;
-                    width: 100%;
-                    background: rgba(0, 0, 0, 0.85);
-                    padding: 10px;
-                  "
+                  class="recent-item"
+                  [id]="appSingularInstance.value.id"
+                  (click)="shallShowModal({'appName': appSingularInstance.value.appName,'appID': appSingularInstance.value.id, 'windowsID': appSingularInstance.value.windows[0].id});"
                 >
-                  <p>Viewing now</p>
-                  <p class="app-slide-description">
-                    {{appSingularInstance.value.title}}
-                  </p>
+                  <img src="assets/images/{{appSingular.value[0].name}}.jpg" />
+                  <div
+                    style="
+                      position: absolute;
+                      bottom: 9px;
+                      width: 100%;
+                      background: rgba(0, 0, 0, 0.85);
+                      padding: 10px;
+                    "
+                  >
+                    <p>Viewing now</p>
+                    <p class="app-slide-description">
+                      {{appSingularInstance.value.title}}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </ion-col>
-        </ion-slide>
-        <ion-slide> </ion-slide>
-      </ion-slides>
+            </ion-col>
+          </ion-slide>
+          <ion-slide> </ion-slide>
+        </ion-slides>
+      </div>
     </div>
     <div
       *ngFor="let appMultiple of appsMultiple | keyvalue; let appIndex=index"
     >
       <!-- SLIDE HEADER -->
-      <ion-row class="text-center">
-        <ion-col size="2">
-          <img
-            width="40px"
-            src="assets/images/{{appMultiple.value[0].name}}-icon.png"
-          />
-        </ion-col>
-        <ion-col size="10" style="text-align: left">
-          <p style="color: white; font-size: 16px">
-            {{appMultiple.value[0].appName}}
-          </p>
-          <p style="color: grey">
-            {{appMultiple.value[0].windows.length }} open window(s)
-          </p>
-        </ion-col>
-      </ion-row>
+      <div>
+        <ion-row class="text-center">
+          <ion-col size="2">
+            <img
+              width="40px"
+              src="assets/images/{{appMultiple.value[0].name}}-icon.png"
+            />
+          </ion-col>
+          <ion-col size="10" style="text-align: left">
+            <p style="color: white; font-size: 16px">
+              {{appMultiple.value[0].appName}}
+            </p>
+            <p style="color: grey">
+              {{appMultiple.value[0].windows.length }} open window(s)
+            </p>
+          </ion-col>
+        </ion-row>
 
-      <!-- SLIDES -->
-      <ion-slides
-        [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }"
-        class="horizontal-slides height-auto"
-      >
-        <ion-slide
-          *ngFor="let appMultipleInstance of appMultiple.value[0].windows | keyvalue; let appMultipleKey=index"
-          style="
-            width: 80%;
-            height: 280px;
-            border: 0px;
-            margin: 0;
-            margin-top: -40px;
-          "
+        <!-- SLIDES -->
+        <ion-slides
+          [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }"
+          class="horizontal-slides height-auto"
         >
-          <ion-col style="text-align: left">
-            <div>
-              <div
-                class="recent-item"
-                [id]="appMultipleInstance.value.id"
-                (click)="presentModal({'appID': appMultiple.value[0].id, 'windowsID': appMultipleInstance.value.id, appCommand: ''});"
-              >
-                <img src="assets/images/{{appMultiple.value[0].name}}.jpg" />
+          <ion-slide
+            *ngFor="let appMultipleInstance of appMultiple.value[0].windows | keyvalue; let appMultipleKey=index"
+            style="
+              width: 80%;
+              height: 280px;
+              border: 0px;
+              margin: 0;
+              margin-top: -40px;
+            "
+          >
+            <ion-col style="text-align: left">
+              <div>
                 <div
-                  style="
-                    position: absolute;
-                    bottom: 9px;
-                    width: 100%;
-                    background: rgba(0, 0, 0, 0.85);
-                    padding: 10px;
-                  "
+                  class="recent-item"
+                  [id]="appMultipleInstance.value.id"
+                  (click)="presentModal({'appID': appMultiple.value[0].id, 'windowsID': appMultipleInstance.value.id, appCommand: ''});"
                 >
-                  <p>Viewing now</p>
-                  <p class="app-slide-description">
-                    {{appMultipleInstance.value.title}}
-                  </p>
+                  <img src="assets/images/{{appMultiple.value[0].name}}.jpg" />
+                  <div
+                    style="
+                      position: absolute;
+                      bottom: 9px;
+                      width: 100%;
+                      background: rgba(0, 0, 0, 0.85);
+                      padding: 10px;
+                    "
+                  >
+                    <p>Viewing now</p>
+                    <p class="app-slide-description">
+                      {{appMultipleInstance.value.title}}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </ion-col>
-        </ion-slide>
-        <ion-slide> </ion-slide>
-      </ion-slides>
+            </ion-col>
+          </ion-slide>
+          <ion-slide> </ion-slide>
+        </ion-slides>
+      </div>
     </div>
   </div>
 </ion-content>
