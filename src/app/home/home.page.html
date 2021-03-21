@@ -61,14 +61,33 @@
                 <div
                   style="
                     position: absolute;
-                    bottom: 9px;
+                    bottom: 5px;
                     width: 100%;
                     background: rgba(0, 0, 0, 0.85);
-                    padding: 10px;
+                    padding: 0px;
                   "
                 >
-                  <p>Viewing now</p>
-                  <p class="app-slide-description">
+                  <p
+                    style="
+                      padding: 0px 10px 0px 10px;
+                      font-size: 14px;
+                      margin: 10px 0px 5px 0px;
+                      color: #929292;
+                    "
+                  >
+                    Viewing now
+                  </p>
+                  <p
+                    style="
+                      padding: 0px 10px 0px 10px;
+                      font-size: 14px;
+                      margin: 0px 0px 10px 0px;
+                      white-space: nowrap;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      width: 100%;
+                    "
+                  >
                     {{appSingularInstance.value.title}}
                   </p>
                 </div>
@@ -84,8 +103,7 @@
   <ion-row
     *ngFor="let appMultiple of globals.APPS_AVAILABLE_MULTIPLE| keyvalue; let appIndex=index"
   >
-    <ion-col
-      >kjhkjh
+    <ion-col>
       <ion-row *ngIf="appMultiple.value[0].name != 'APPLICATIONFRAMEHOST'">
         <ion-col size="2">
           <img
@@ -126,14 +144,33 @@
               <div
                 style="
                   position: absolute;
-                  bottom: 9px;
+                  bottom: 5px;
                   width: 100%;
                   background: rgba(0, 0, 0, 0.85);
-                  padding: 10px;
+                  padding: 0px;
                 "
               >
-                <p>Viewing now</p>
-                <p class="app-slide-description">
+                <p
+                  style="
+                    padding: 0px 10px 0px 10px;
+                    font-size: 14px;
+                    margin: 10px 0px 5px 0px;
+                    color: #929292;
+                  "
+                >
+                  Viewing now
+                </p>
+                <p
+                  style="
+                    padding: 0px 10px 0px 10px;
+                    font-size: 14px;
+                    margin: 0px 0px 10px 0px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    width: 100%;
+                  "
+                >
                   {{appMultipleInstance.value.title}}
                 </p>
               </div>

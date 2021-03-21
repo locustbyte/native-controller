@@ -23,6 +23,7 @@
 .app-title {
   color: white !important;
   font-size: 16px;
+  margin: 0px;
   font-weight: bold;
   width: 80%;
   white-space: nowrap;
@@ -32,9 +33,12 @@
 .app-description {
   color: #c1c1c1;
   font-weight: bold;
+  margin: 0px;
 }
 .app-slide-description {
   width: 90%;
+  padding: 0px 10px 0px 10px;
+  font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
