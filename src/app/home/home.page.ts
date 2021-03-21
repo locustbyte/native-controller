@@ -41,6 +41,10 @@ export class HomePage implements OnInit {
   allowedApps = [
     "Microsoft Teams", "Netflix", "Powerpoint", "Spotify"
   ]
+  testLip = [
+    { ID: "valiue" },
+    { ID: "valiue" }, { ID: "valiuedfdfg" }
+  ]
 
 
 
@@ -48,7 +52,10 @@ export class HomePage implements OnInit {
 
 
   runningProcessesObservable: Observable<RunningProcesses[]>;
-
+  isAllowedAppName(appName) {
+    console.log(this.allowedApps.includes(appName) == true)
+    return this.allowedApps.includes(appName) == true 
+  }
   isAllowedApp(appName) {
     console.log(appName)
     console.log(this.allowedApps.includes(appName.appName))
@@ -159,16 +166,16 @@ export class HomePage implements OnInit {
 
       objectArray.forEach(([key, value]) => {
         if (value[0].windows.length > 1) {
-          this.appsMultiple.push(value)
+          this.globals.APPS_AVAILABLE_MULTIPLE.push(value)
           console.log(value[0].windows.length)
         }
         if (value[0].windows.length == 1) {
-          this.appsSingular.push(value)
+          this.globals.APPS_AVAILABLE_SINGULAR.push(value)
         }
       });
 
-      console.log(this.appsSingular)
-      console.log(this.appsMultiple)
+      console.log(this.globals.APPS_AVAILABLE_SINGULAR)
+      console.log(this.globals.APPS_AVAILABLE_MULTIPLE)
 
       this.theRunningApps2 = this.appsMultiple
 
@@ -179,7 +186,7 @@ export class HomePage implements OnInit {
 
 
   ngOnInit() {
-    this.getRunningProcesses();
+
   }
 
 

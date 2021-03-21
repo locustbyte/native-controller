@@ -44,6 +44,8 @@ export class ApiService {
 
 
   public getAppsRunning() {
+    this.globals.APPS_AVAILABLE_SINGULAR = [];
+    this.globals.APPS_AVAILABLE_MULTIPLE = [];
     //return this.httpClient.get(this.globals.REST_API_SERVER + "/apps/running/")
     //return this.httpClient.get<any>("/api/apps/running")
 
@@ -54,7 +56,7 @@ export class ApiService {
     // );
     // this.globals.REST_API_IP = '127.0.0.1';
     //this.globals.REST_API_SERVER = "http://" + this.globals.REST_API_IP + ":5000/api/system";
-    return this.httpClient.get<any>(this.globals.REST_API_SERVER + "/apps/running/");
+    return this.httpClient.get<any>("api/apps/running/");
   }
 
   public getSnapshot(param) {
