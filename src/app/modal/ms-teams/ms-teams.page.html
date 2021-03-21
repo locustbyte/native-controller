@@ -24,6 +24,12 @@
           src="assets/images/NETFLIX-icon.png"
         />{{specificAppData.appName}}</span
       >
+      <span *ngIf="specificAppData.appName == 'Spotify'"
+        ><img
+          style="width: 50px; vertical-align: middle"
+          src="assets/images/SPOTIFY-icon.png"
+        />{{specificAppData.appName}}</span
+      >
     </ion-title>
     <ion-buttons slot="end">
       <ion-button fill="clear" (click)="dismiss();"> </ion-button>
@@ -123,18 +129,18 @@
         <div>
           <img
             class="touch-icon"
-            *ngIf="camera == 'false'"
-            src="assets/images/microsoft-teams/camera-off.png"
-            (click)="switchCamera();"
-          />
-          <img
-            class="touch-icon"
             *ngIf="camera == 'true'"
             src="assets/images/microsoft-teams/camera-on.png"
             (click)="switchCamera();"
           />
-          <p *ngIf="camera == 'false'">Turn Camera Off</p>
-          <p *ngIf="camera == 'true'">Turn Camera On</p>
+          <img
+            class="touch-icon"
+            *ngIf="camera == 'false'"
+            src="assets/images/microsoft-teams/camera-off.png"
+            (click)="switchCamera();"
+          />
+          <p *ngIf="camera == 'true'">Turn Camera Off</p>
+          <p *ngIf="camera == 'false'">Turn Camera On</p>
         </div>
       </ion-col>
     </ion-row>
@@ -181,6 +187,36 @@
       </ion-col>
       <ion-col offset-4>
         <div (click)="netflixStop();"><img src="assets/images/stop.png" /></div>
+      </ion-col>
+    </ion-row>
+  </div>
+  <div *ngIf="specificAppData.appName == 'Spotify'">
+    <ion-row class="text-center">
+      <ion-col>
+        <div class="modal-title">Title</div>
+        <div title="modal-sub-title">Sub title</div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="text-center">
+      <ion-col>
+        <div class="netflix-poster">
+          <img src="assets/images/SPOTIFY.jpg" />
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="text-center">
+      <ion-col offset-4>
+        <div (click)="spotifyShuffle();">
+          <img src="assets/images/rewind-30-icon.png" />
+        </div>
+      </ion-col>
+      <ion-col offset-4>
+        <div (click)="spotifyPlay();">
+          <img width="30px" src="assets/images/pause.png" />
+        </div>
+      </ion-col>
+      <ion-col offset-4>
+        <div (click)="spotifyStop();"><img src="assets/images/stop.png" /></div>
       </ion-col>
     </ion-row>
   </div>

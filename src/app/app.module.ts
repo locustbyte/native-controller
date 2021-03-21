@@ -11,6 +11,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { GlobalConstants } from "./global-constants";
+import { HTTP } from '@ionic-native/http/ngx';
 
 
 
@@ -31,7 +32,7 @@ import { GlobalConstants } from "./global-constants";
       }
     }),
   ],
-  providers: [GlobalConstants, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [GlobalConstants, HTTP, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

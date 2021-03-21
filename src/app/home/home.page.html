@@ -6,12 +6,15 @@
   </ion-buttons>
 
   <ion-title class="text-center"
-    >Active Apps ({{appsSingular.length + appsMultiple.length}})</ion-title
+    >Active Apps ({{appsSingular.length + appsMultiple.length}})<br /><small
+      >Machine IP: {{globals.REST_API_IP}}</small
+    ></ion-title
   >
 </ion-toolbar>
 <ion-content [fullscreen]="true">
   <div id="container">
     <div
+      class="m-t-30"
       *ngFor="let appSingular of appsSingular | keyvalue; let appIndex=index"
     >
       <!-- SLIDE HEADER -->
@@ -53,7 +56,7 @@
                 <div
                   class="recent-item"
                   [id]="appSingularInstance.value.id"
-                  (click)="shallShowModal({'appName': appSingularInstance.value.appName,'appID': appSingularInstance.value.id, 'windowsID': appSingularInstance.value.windows[0].id});"
+                  (click)="isAllowedApp({'appName':appSingularInstance.value.appName,'appName': appSingularInstance.value.appName,'appID': appSingularInstance.value.id, 'windowsID': appSingularInstance.value.windows[0].id});"
                 >
                   <img src="assets/images/{{appSingular.value[0].name}}.jpg" />
                   <div
@@ -82,7 +85,8 @@
       *ngFor="let appMultiple of appsMultiple | keyvalue; let appIndex=index"
     >
       <!-- SLIDE HEADER -->
-      <div>
+
+      <div *ngIf="appMultiple.value[0].name != 'APPLICATIONFRAMEHOST'">
         <ion-row class="text-center">
           <ion-col size="2">
             <img
@@ -108,7 +112,7 @@
           <ion-slide
             *ngFor="let appMultipleInstance of appMultiple.value[0].windows | keyvalue; let appMultipleKey=index"
             style="
-              width: 80%;
+              width: 90%;
               height: 280px;
               border: 0px;
               margin: 0;
@@ -120,7 +124,7 @@
                 <div
                   class="recent-item"
                   [id]="appMultipleInstance.value.id"
-                  (click)="presentModal({'appID': appMultiple.value[0].id, 'windowsID': appMultipleInstance.value.id, appCommand: ''});"
+                  (click)="isAllowedApp({'appName': appMultiple.value[0].appName, 'appID': appMultiple.value[0].id, 'windowsID': appMultipleInstance.value.id, appCommand: ''})"
                 >
                   <img src="assets/images/{{appMultiple.value[0].name}}.jpg" />
                   <div

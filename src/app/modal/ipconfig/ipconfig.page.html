@@ -22,11 +22,13 @@
             [ngModel]="currentIpAddress"
             (ionChange)="onIpUpdate($event.target.value)"
             clearInput
+            (keyup.enter)="dismiss();"
             required
           ></ion-input>
         </ion-item>
         <p class="m-t-20">
-          Simply enter the new IP address above and then close modal.
+          Simply enter the new IP address above and then press enter or close
+          the modal.
         </p>
         <p>Change takes effect immediately</p>
 
@@ -36,9 +38,9 @@
             <ion-note slot="end" color="primary">207.180.244.152</ion-note>
           </ion-item>
 
-          <ion-item style="padding: 10px" (click)="setIp('127.0.0.1')">
+          <ion-item style="padding: 10px" (click)="setIp('192.168.1.215')">
             <ion-label>Local Machine</ion-label>
-            <ion-note slot="end" color="secondary">127.0.0.1</ion-note>
+            <ion-note slot="end" color="secondary">192.168.1.215</ion-note>
           </ion-item>
         </ion-list>
       </div>

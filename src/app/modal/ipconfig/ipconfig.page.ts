@@ -25,12 +25,13 @@ export class IpconfigPage implements OnInit {
     console.log(ip);
     this.currentIpAddress = ip
     this.globals.REST_API_IP = ip;
-    this.globals.REST_API_SERVER = "https://" + ip + ":5000/api/system/";
+    this.globals.REST_API_SERVER = "https://" + ip + ":5000/api/system";
+    this.dismiss();
   }
 
   onIpUpdate(ip) {
     this.globals.REST_API_IP = ip;
-    this.globals.REST_API_SERVER = "https://" + ip + ":5000/api/system/";
+    this.globals.REST_API_SERVER = "https://" + ip + ":5000/api/system";
   }
 
 

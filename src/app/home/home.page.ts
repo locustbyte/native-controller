@@ -3,11 +3,10 @@ import { ModalController } from '@ionic/angular';
 import { MsTeamsPage } from './../modal/ms-teams/ms-teams.page';
 import { IpconfigPage } from './../modal/ipconfig/ipconfig.page';
 import { Observable } from "rxjs";
-import { tap, catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ApiService } from "../services/api.service";
-import { Identifiers } from '@angular/compiler/src/render3/r3_identifiers';
 import { GlobalConstants } from './../global-constants';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 class RunningProcesses {
@@ -15,8 +14,6 @@ class RunningProcesses {
   name: string;
   processStartName: string;
   title: string;
-
-
 }
 
 
@@ -40,18 +37,28 @@ export class HomePage implements OnInit {
   currentModal = null;
   randTest = []
   dataReturned = []
+  thumbnail: any;
+  allowedApps = [
+    "Microsoft Teams", "Netflix", "Powerpoint", "Spotify"
+  ]
 
 
-  constructor(public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
+
+  constructor(private sanitizer: DomSanitizer, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
 
 
   runningProcessesObservable: Observable<RunningProcesses[]>;
 
-
-
-
+  isAllowedApp(appName) {
+    console.log(appName)
+    console.log(this.allowedApps.includes(appName.appName))
+    if (this.allowedApps.includes(appName.appName) == true) {
+      this.presentModal(appName, 'true')
+    } else {
+      this.doFocusWindow(appName)
+    }
+  }
   async presentIPModal() {
-    console.log(event)
     const modal = await this.modalController.create({
       component: IpconfigPage,
       cssClass: 'my-custom-class'
@@ -65,15 +72,14 @@ export class HomePage implements OnInit {
           this.appsMultiple = []
           this.getRunningProcesses()
         }
-
         //alert('Modal Sent Data :'+ dataReturned);
       }
     });
     return await modal.present();
     this.currentModal = modal;
   }
-  async presentModal(event) {
-    console.log(event)
+  async presentModal(event, trusted) {
+
     this.doFocusWindow(event)
     localStorage.setItem('currentAppID', JSON.stringify(event));
     const modal = await this.modalController.create({
@@ -83,38 +89,63 @@ export class HomePage implements OnInit {
         'app': event.path
       }
     });
-
+    modal.onDidDismiss().then((dataReturned) => {
+      console.log(dataReturned.data.dismissed)
+      if (dataReturned !== null) {
+        if (dataReturned.data.dismissed == true) {
+          this.dataReturned = dataReturned.data;
+          // Should think about syncing the new app list here
+          // this.appsSingular = []
+          // this.appsMultiple = []
+          // this.getRunningProcesses()
+        }
+      }
+    });
     return await modal.present();
     this.currentModal = modal;
+    //this.doFocusWindow(event)
   }
 
   shallShowModal(params) {
-    console.log(params)
-    if (params.appName == 'Microsoft Teams' || params.appName == 'Netflix' || params.appName == 'Powerpoint') {
-      this.doFocusWindow(params)
-      this.presentModal(params)
+    if (params.appName == 'Microsoft Teams' || params.appName == 'Netflix' || params.appName == 'Powerpoint' || params.appName == 'Spotify') {
+      this.presentModal(params, false)
     } else {
       console.log("no commands")
       this.doFocusWindow(params)
     }
 
-  }
-  getSnapshot(id) {
-    this.apiService.getSnapshot(4128).subscribe((data: any[]) => {
-      console.log(data);
 
-    })
+  }
+
+
+  getSnapshot(params) {
+    this.apiService.getSnapshot(params)
+      .subscribe((baseImage: any) => {
+        console.log(baseImage)
+        alert(JSON.stringify(baseImage));
+        let objectURL = 'data:image/jpeg;base64,' + baseImage.image;
+
+        this.thumbnail = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+
+      });
   }
 
 
   doFocusWindow(params) {
     console.log(params)
-    this.apiService.doSetWindowFocus(params).subscribe((data: any[]) => {
-      console.log(data)
+
+    this.apiService.doSetWindowFocus(params).subscribe((baseImage: any) => {
+      console.log(baseImage)
+
+      let objectURL = 'data:image/jpeg;base64,' + baseImage.image;
+
+      this.thumbnail = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+
     })
   }
   getRunningProcesses() {
     this.apiService.getAppsRunning().subscribe((data: any[]) => {
+      console.log(data)
       let group = data.reduce((r, a) => {
         // console.log("a", a);
         // console.log('r', r);

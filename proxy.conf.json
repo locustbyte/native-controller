@@ -1,8 +1,12 @@
 {
     "/api/*": {
-        "target": "https://192.168.1.215:5000/",
-        "secure": true,
+        "target": "https://192.168.1.215:5000",
+        "secure": false,
         "changeOrigin": true,
-        "logLevel": "debug"
-    },
+        "logLevel": "debug",
+        "pathRewrite": {
+            "^/api/apps/running": "/api/system/apps/running",
+            "^/api": ""
+        }
+    }
 }

@@ -211,9 +211,47 @@ export class MsTeamsPage implements OnInit {
   }
 
 
+  // Spotify
+  spotifyShuffle() {
+    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
+
+    this.commandDataSend = {
+      appId: this.commandData.appId,
+      windowId: this.commandData.windowId,
+      command: "Shuffle"
+    }
+    myOpt.appCommand = "Shuffle"
+    this.doExecuteCommand(myOpt);
+  }
+  spotifyPlay() {
+    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
+
+    this.commandDataSend = {
+      appId: this.commandData.appId,
+      windowId: this.commandData.windowId,
+      command: "Play"
+    }
+    myOpt.appCommand = "Play"
+    this.doExecuteCommand(myOpt);
+  }
+  spotifyStop() {
+    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
+
+    this.commandDataSend = {
+      appId: this.commandData.appId,
+      windowId: this.commandData.windowId,
+      command: "Stop"
+    }
+    myOpt.appCommand = "Stop"
+    this.doExecuteCommand(myOpt);
+  }
+
+
 
   ngOnInit() {
-
+    // localStorage.removeItem("teamsHand")
+    // localStorage.removeItem("teamsCamera")
+    // localStorage.removeItem("teamsMic")
     if (!localStorage.getItem("teamsHand") == true) {
       localStorage.setItem("teamsHand", "false")
       this.hand = "false"
