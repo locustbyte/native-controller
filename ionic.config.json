@@ -3,11 +3,5 @@
   "integrations": {
     "cordova": {}
   },
-  "type": "angular",
-  "proxies": [
-    {
-      "path": "/api/apps/running",
-      "proxyUrl": "https://192.168.1.215:5000/api/system/apps/running"
-    }
-  ]
+  "type": "angular"
 }
