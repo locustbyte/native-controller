@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
     return this.allowedApps.includes(appName) == true
   }
   getRunningProcesses() {
+    this.globals.LOADING = true
     this.globals.APPS_AVAILABLE_SINGULAR = [];
     this.globals.APPS_AVAILABLE_MULTIPLE = [];
     this.apiService.getAppsRunning().subscribe((data: any[]) => {
@@ -98,9 +99,13 @@ export class AppComponent implements OnInit {
           this.globals.APPS_AVAILABLE_SINGULAR.push(value)
         }
       });
+      console.log(this.globals.APPS_AVAILABLE_SINGULAR)
+      console.log(this.globals.APPS_AVAILABLE_MULTIPLE)
+      console.log(this.globals.LOADING)
 
-
-
+      setTimeout(() => {
+        this.globals.LOADING = false;
+      }, 0);
 
 
 
@@ -109,7 +114,7 @@ export class AppComponent implements OnInit {
     })
   }
   grabUserIpAddress() {
-    this.httpClient.get("assets/images/ipAddress.json").subscribe(data => {
+    this.httpClient.get("assets/ipAddress.json").subscribe(data => {
       this.globals.REST_API_IP = data[0].ip
       this.globals.REST_API_PORT = data[0].port
     })

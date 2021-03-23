@@ -14,6 +14,14 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-row class="loading-screen text-center" *ngIf="this.globals.LOADING">
+    <ion-col>
+      <div>
+        <h1>Fetching your apps...</h1>
+        <img src="assets/images/svg-css-loaders/ball-triangle.svg" />
+      </div>
+    </ion-col>
+  </ion-row>
   <ion-row
     class="m-t-30"
     *ngFor="let appSingular of globals.APPS_AVAILABLE_SINGULAR| keyvalue; let appIndex=index"

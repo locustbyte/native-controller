@@ -44,6 +44,8 @@ export class IpconfigPage implements OnInit {
   ngOnInit() {
     this.currentIpAddress = localStorage.getItem("currentIpAddress");
     this.currentPortAddress = localStorage.getItem("currentPortAddress");
+
+
   }
 
 }

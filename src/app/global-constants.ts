@@ -10,6 +10,7 @@ export class GlobalConstants {
     public REST_API_SERVER = "http://" + this.REST_API_IP + ":" + this.REST_API_PORT + "/api/system";
     public APPS_AVAILABLE_SINGULAR = [];
     public APPS_AVAILABLE_MULTIPLE = [];
+    public LOADING = true;
     public errorActive = false;
 
 
