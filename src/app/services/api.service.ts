@@ -12,6 +12,10 @@ import { of } from 'rxjs';
 })
 export class ApiService {
 
+
+  theApiServer: string;
+
+
   httpOptions = {
     headers: new HttpHeaders(
       {
@@ -25,7 +29,14 @@ export class ApiService {
   headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
 
   constructor(private httpClient: HttpClient, public globals: GlobalConstants) {
-
+    if (localStorage.getItem("currentIpAddress")) {
+      this.globals.REST_API_IP = localStorage.getItem("currentIpAddress")
+    }
+    if (localStorage.getItem("currentPortAddress")) {
+      this.globals.REST_API_PORT = localStorage.getItem("currentPortAddress")
+    }
+    this.globals.REST_API_SERVER = "http://" + this.globals.REST_API_IP + ":" + this.globals.REST_API_PORT + "/api/system";
+    this.theApiServer = this.globals.REST_API_SERVER
   }
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
@@ -42,10 +53,8 @@ export class ApiService {
   }
 
 
-
   public getAppsRunning() {
-    this.globals.APPS_AVAILABLE_SINGULAR = [];
-    this.globals.APPS_AVAILABLE_MULTIPLE = [];
+
     //return this.httpClient.get(this.globals.REST_API_SERVER + "/apps/running/")
     //return this.httpClient.get<any>("/api/apps/running")
 
@@ -56,7 +65,7 @@ export class ApiService {
     // );
     // this.globals.REST_API_IP = '127.0.0.1';
     //this.globals.REST_API_SERVER = "http://" + this.globals.REST_API_IP + ":5000/api/system";
-    return this.httpClient.get<any>("api/apps/running/");
+    return this.httpClient.get<any>(this.globals.REST_API_SERVER + "/apps/running/");
   }
 
   public getSnapshot(param) {
@@ -91,52 +100,19 @@ export class ApiService {
   // Set focus to app window
   public doSetWindowFocus(data) {
     var theURL = this.globals.REST_API_SERVER + "/apps/running/" + data.appID + "/" + data.windowsID
-    const headers = { 'Access-Control-Allow-Origin': '*', 'My-Custom-Header': 'foobar' };
+
     const body = { title: 'Angular PUT Request Example' };
-    return this.httpClient.put<any>(theURL, body, { headers }).pipe(
-      map((result: HttpResponse<Blob>) => {
-        console.log(result)
-      })
-    )
+    return this.httpClient.put<any>(theURL, body)
 
 
-    // var theURL = this.globals.REST_API_SERVER + "/apps/running/" + data.appID + "/" + data.windowsID
-    // // return this.httpClient.put(theURL, data).pipe(
-    // //   tap(_ => console.log('updated hero id=')),
-    // //   catchError(this.handleError<any>('updateHero'))
-    // // );
-    // var putData
-    // // console.log(data)
-    // // return this.httpClient
-    // //   .get("data-url")
-    // //   .subscribe(
-    // //     data => console.log('success', data),
-    // //     error => console.log('oops', error)
-    // //   );
-    // // return from(
-    // //   fetch(theURL, {
-    // //     headers: {
-    // //       'Content-Type': 'application/json',
-    // //     },
-    // //     method: 'PUT', // GET, POST, PUT, DELETE
-    // //     mode: 'no-cors' // the most important option
-    // //   })
-    // //     .then(function () {
-    // //       console.log("No API problems");
-    // //     }).catch(function () {
-    // //       console.log("error");
-    // //     })
-    // )
-    //return this.httpClient.put(this.globals.REST_API_SERVER + "/apps/running/" + data.appID + "/" + data.windowsID, putData)
+
   }
 
-  public getSpecificAppDetail(app) {
-    return this.httpClient.get<any>(this.globals.REST_API_SERVER + "/apps/running/" + app.appID + "?windowId=" + app.windowsID)
-  }
+
 
   public executeCommand(data: any): Observable<any> {
     console.log(data)
-    //var theURL = "http://207.180.244.152:5000/api/System/application/2944/shortcuts?windowId=4589428&commandName=Raise"
+    //var theURL = "http://207.180.244.152/api/System/application/2944/shortcuts?windowId=4589428&commandName=Raise"
     var theURL = this.globals.REST_API_SERVER + "/application/" + data.appID + "/shortcuts?windowId=" + data.windowsID + "&commandName=" + data.appCommand
 
     //var postData = { "processID": 343 }

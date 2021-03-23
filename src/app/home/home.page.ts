@@ -38,13 +38,14 @@ export class HomePage implements OnInit {
   randTest = []
   dataReturned = []
   thumbnail: any;
+
+  currentIP: string;
+  currentPort: string;
   allowedApps = [
-    "Microsoft Teams", "Netflix", "Powerpoint", "Spotify"
+    "Microsoft Teams", "TEAMS", "Netflix", "Powerpoint", "Spotify", "NOTEPAD", "APPLICATIONFRAMEHOST"
   ]
-  testLip = [
-    { ID: "valiue" },
-    { ID: "valiue" }, { ID: "valiuedfdfg" }
-  ]
+  preStripArr = [];
+  theAppData = []
 
 
 
@@ -53,12 +54,11 @@ export class HomePage implements OnInit {
 
   runningProcessesObservable: Observable<RunningProcesses[]>;
   isAllowedAppName(appName) {
-    console.log(this.allowedApps.includes(appName) == true)
-    return this.allowedApps.includes(appName) == true 
+
+    return this.allowedApps.includes(appName) == true
   }
   isAllowedApp(appName) {
-    console.log(appName)
-    console.log(this.allowedApps.includes(appName.appName))
+
     if (this.allowedApps.includes(appName.appName) == true) {
       this.presentModal(appName, 'true')
     } else {
@@ -71,7 +71,7 @@ export class HomePage implements OnInit {
       cssClass: 'my-custom-class'
     });
     modal.onDidDismiss().then((dataReturned) => {
-      console.log(dataReturned.data.dismissed)
+
       if (dataReturned !== null) {
         if (dataReturned.data.dismissed == true) {
           this.dataReturned = dataReturned.data;
@@ -97,7 +97,7 @@ export class HomePage implements OnInit {
       }
     });
     modal.onDidDismiss().then((dataReturned) => {
-      console.log(dataReturned.data.dismissed)
+
       if (dataReturned !== null) {
         if (dataReturned.data.dismissed == true) {
           this.dataReturned = dataReturned.data;
@@ -117,7 +117,7 @@ export class HomePage implements OnInit {
     if (params.appName == 'Microsoft Teams' || params.appName == 'Netflix' || params.appName == 'Powerpoint' || params.appName == 'Spotify') {
       this.presentModal(params, false)
     } else {
-      console.log("no commands")
+
       this.doFocusWindow(params)
     }
 
@@ -128,7 +128,7 @@ export class HomePage implements OnInit {
   getSnapshot(params) {
     this.apiService.getSnapshot(params)
       .subscribe((baseImage: any) => {
-        console.log(baseImage)
+
         alert(JSON.stringify(baseImage));
         let objectURL = 'data:image/jpeg;base64,' + baseImage.image;
 
@@ -139,53 +139,100 @@ export class HomePage implements OnInit {
 
 
   doFocusWindow(params) {
-    console.log(params)
 
-    this.apiService.doSetWindowFocus(params).subscribe((baseImage: any) => {
-      console.log(baseImage)
 
-      let objectURL = 'data:image/jpeg;base64,' + baseImage.image;
+    this.apiService.doSetWindowFocus(params).subscribe((data: any) => {
 
-      this.thumbnail = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+
 
     })
   }
   getRunningProcesses() {
+    this.globals.APPS_AVAILABLE_SINGULAR = [];
+    this.globals.APPS_AVAILABLE_MULTIPLE = [];
     this.apiService.getAppsRunning().subscribe((data: any[]) => {
-      console.log(data)
-      let group = data.reduce((r, a) => {
-        // console.log("a", a);
-        // console.log('r', r);
+      this.preStripArr = data;
+
+
+      for (const [i, v] of this.preStripArr.entries()) {
+
+        var allowed = this.isAllowedAppName(v.name)
+
+        if (v.name == "APPLICATIONFRAMEHOST") {
+          for (const [ii, vv] of v.windowTitles.entries()) {
+
+            var allowed = this.isAllowedAppName(vv)
+
+            if (allowed === true) {
+              v.title = vv
+              v.appName = vv
+              v.name = vv.toUpperCase()
+              v.switched = true
+
+              v.windowTitles = [];
+              var [windowTitleTemp] = [vv]
+              v.windowTitles = ([windowTitleTemp])
+
+              v.windows = [v.windows[ii]];
+              this.theAppData.push(v)
+            }
+          }
+        } else {
+          if (allowed === true) {
+            this.theAppData.push(v)
+          }
+        }
+
+
+
+      }
+
+
+
+
+      let group = this.theAppData.reduce((r, a) => {
+        //
+        // 
         r[a.name] = [...r[a.name] || [], a];
         return r;
       }, {});
 
       const objectArray = Object.entries(group)
 
-      //console.log(objectArray)
+
 
       objectArray.forEach(([key, value]) => {
         if (value[0].windows.length > 1) {
           this.globals.APPS_AVAILABLE_MULTIPLE.push(value)
-          console.log(value[0].windows.length)
         }
         if (value[0].windows.length == 1) {
           this.globals.APPS_AVAILABLE_SINGULAR.push(value)
         }
       });
 
-      console.log(this.globals.APPS_AVAILABLE_SINGULAR)
-      console.log(this.globals.APPS_AVAILABLE_MULTIPLE)
 
-      this.theRunningApps2 = this.appsMultiple
 
-      // console.log(this.theRunningApps2)
+
+
+
+      // 
       // this.getItems(this.theRunningApps2, "Microsoft Teams")
     })
   }
 
 
   ngOnInit() {
+
+    if (localStorage.getItem("currentIpAddress")) {
+      this.currentIP = localStorage.getItem("currentIpAddress")
+    } else {
+      this.currentIP = this.globals.REST_API_IP
+    }
+    if (localStorage.getItem("currentPortAddress")) {
+      this.currentPort = localStorage.getItem("currentPortAddress")
+    } else {
+      this.currentPort = this.globals.REST_API_PORT
+    }
 
   }
 

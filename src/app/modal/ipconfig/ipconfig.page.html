@@ -13,37 +13,38 @@
 
 <ion-content class="no-scroll">
   <ion-row class="text-center">
-    <ion-col>
-      <div class="modal-title" style="padding: 20px">
-        <ion-item>
-          <ion-label position="floating">Current IP</ion-label>
-          <ion-input
-            style="height: 80px; font-size: 30px"
-            [ngModel]="currentIpAddress"
-            (ionChange)="onIpUpdate($event.target.value)"
-            clearInput
-            (keyup.enter)="dismiss();"
-            required
-          ></ion-input>
-        </ion-item>
-        <p class="m-t-20">
-          Simply enter the new IP address above and then press enter or close
-          the modal.
-        </p>
-        <p>Change takes effect immediately</p>
+    <ion-col class="modal-title" style="padding: 20px">
+      <ion-item>
+        <ion-label position="stacked">Current IP Address</ion-label>
+        <ion-input
+          style="height: 80px; font-size: 30px"
+          [value]="globals.REST_API_IP"
+          [(ngModel)]="currentIpAddress"
+          clearInput
+          placeholder="Current IP"
+          required
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Current Port Setting</ion-label>
+        <ion-input
+          style="height: 80px; font-size: 30px"
+          [value]="globals.REST_API_PORT"
+          [(ngModel)]="currentPortAddress"
+          clearInput
+          placeholder="Current PORT"
+          required
+        ></ion-input>
+      </ion-item>
 
-        <ion-list>
-          <ion-item style="padding: 10px" (click)="setIp('207.180.244.152')">
-            <ion-label>Test Server</ion-label>
-            <ion-note slot="end" color="primary">207.180.244.152</ion-note>
-          </ion-item>
-
-          <ion-item style="padding: 10px" (click)="setIp('192.168.1.215')">
-            <ion-label>Local Machine</ion-label>
-            <ion-note slot="end" color="secondary">192.168.1.215</ion-note>
-          </ion-item>
-        </ion-list>
-      </div>
+      <p class="m-t-20">
+        Simply enter the new IP address <br />and PORT (if required) then hit
+        UPDATE button below
+      </p>
+      <p>Change takes effect immediately</p>
+      <ion-button expand="block" (click)="updateIpPort();"
+        >A block button</ion-button
+      >
     </ion-col>
   </ion-row>
 </ion-content>

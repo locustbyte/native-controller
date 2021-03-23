@@ -42,7 +42,7 @@
     <ion-row class="text-center">
       <ion-col class="touch-icon">
         <div class="modal-title">Title</div>
-        <div title="modal-sub-title">Last saved</div>
+        <div class="modal-sub-title">Last saved</div>
       </ion-col>
     </ion-row>
     <ion-row class="text-center pp-boxes">
@@ -164,7 +164,7 @@
     <ion-row class="text-center">
       <ion-col>
         <div class="modal-title">Title</div>
-        <div title="modal-sub-title">Sub title</div>
+        <div class="modal-sub-title">Sub title</div>
       </ion-col>
     </ion-row>
     <ion-row class="text-center">
@@ -181,8 +181,17 @@
         </div>
       </ion-col>
       <ion-col offset-4>
-        <div (click)="netflixPause();">
-          <img width="30px" src="assets/images/pause.png" />
+        <div>
+          <ion-icon
+            *ngIf="netflixPlay == 'true'"
+            (click)="netflixPause();"
+            name="pause-outline"
+          ></ion-icon>
+          <ion-icon
+            *ngIf="netflixPlay == 'false'"
+            (click)="netflixPause();"
+            name="play-outline"
+          ></ion-icon>
         </div>
       </ion-col>
       <ion-col offset-4>
@@ -194,7 +203,7 @@
     <ion-row class="text-center">
       <ion-col>
         <div class="modal-title">Title</div>
-        <div title="modal-sub-title">Sub title</div>
+        <div class="modal-sub-title">Sub title</div>
       </ion-col>
     </ion-row>
     <ion-row class="text-center">

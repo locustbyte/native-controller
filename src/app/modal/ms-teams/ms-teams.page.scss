@@ -53,6 +53,14 @@ ion-toolbar {
         padding: 50px !important;
     }
 }
+.modal-title {
+    font-size: 24px;
+    margin: 20px 0px 20px 0px;
+}
+.modal-sub-title {
+    font-size: 18px;
+    margin: 20px 0px 20px 0px;
+}
 .sc-ion-modal-md-h {
     &:first-of-type {
         --backdrop-opacity: var(--ion-backdrop-opacity, 0.7);

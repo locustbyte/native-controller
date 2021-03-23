@@ -5,11 +5,10 @@
         <ion-icon name="settings-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title class="text-center"
+    <ion-title class="text-center p-r-30"
       >Active Apps ({{globals.APPS_AVAILABLE_SINGULAR.length +
-      globals.APPS_AVAILABLE_MULTIPLE.length}})<br /><small
-        >Machine IP: {{globals.REST_API_IP}}</small
-      ></ion-title
+      globals.APPS_AVAILABLE_MULTIPLE.length}})<br />
+      <small>Machine {{currentIP}}:{{currentPort}}</small></ion-title
     >
   </ion-toolbar>
 </ion-header>
@@ -20,7 +19,7 @@
     *ngFor="let appSingular of globals.APPS_AVAILABLE_SINGULAR| keyvalue; let appIndex=index"
   >
     <ion-col>
-      <ion-row *ngIf="appSingular.value[0].name != 'TEXTINPUTHOST'">
+      <ion-row>
         <ion-col size="2" class="text-center">
           <img
             width="40px"
@@ -28,7 +27,7 @@
           />
         </ion-col>
         <ion-col size="10" style="text-align: left">
-          <p class="app-title">{{appSingular.value[0].appName}}</p>
+          <p class="app-title">{{appSingular.value[0].name}}</p>
           <p class="app-description" *ngIf="appSingular.value.length > 1">
             {{appSingular.value.length}} open window(s)
           </p>
@@ -51,11 +50,11 @@
           <ion-col style="text-align: left">
             <!--doFocusWindow (click)="doFocusWindow({'appID': appSingularInstance.value.id, 'windowsID': appSingularInstance.value.windows[0].id});"-->
 
-            <div *ngIf="appSingularInstance.value.windows.length != 0">
+            <div>
               <div
                 class="recent-item"
                 [id]="appSingularInstance.value.id"
-                (click)="isAllowedApp({'appName':appSingularInstance.value.appName,'appName': appSingularInstance.value.appName,'appID': appSingularInstance.value.id, 'windowsID': appSingularInstance.value.windows[0].id});"
+                (click)="isAllowedApp({'appName': appSingularInstance.value.appName,'appID': appSingularInstance.value.id, 'windowsID': appSingularInstance.value.windows[0].id});"
               >
                 <img src="assets/images/{{appSingular.value[0].name}}.jpg" />
                 <div
@@ -104,7 +103,7 @@
     *ngFor="let appMultiple of globals.APPS_AVAILABLE_MULTIPLE| keyvalue; let appIndex=index"
   >
     <ion-col>
-      <ion-row *ngIf="appMultiple.value[0].name != 'APPLICATIONFRAMEHOST'">
+      <ion-row>
         <ion-col size="2">
           <img
             width="40px"

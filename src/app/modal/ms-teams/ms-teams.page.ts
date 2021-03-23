@@ -14,6 +14,7 @@ export class MsTeamsPage implements OnInit {
   mic = localStorage.getItem("teamsMic");;
   camera = localStorage.getItem("teamsCamera");
   hand = localStorage.getItem("teamsHand");
+  netflixPlay = localStorage.getItem("netflixPlay");
   commandData = {
     appId: '',
     windowId: '',
@@ -35,9 +36,28 @@ export class MsTeamsPage implements OnInit {
 
   // Get window specific data
   getSpecificApp(app) {
-    this.apiService.getSpecificAppDetail(app).subscribe((data: any[]) => {
-      this.specificAppData = data;
-    })
+
+
+    for (const [i, v] of this.globals.APPS_AVAILABLE_SINGULAR.entries()) {
+
+
+      if (v[i].appName == app.appName) {
+
+        this.specificAppData = v[i]
+      }
+
+    }
+    for (const [i, v] of this.globals.APPS_AVAILABLE_MULTIPLE.entries()) {
+
+
+      if (v[i].appName == app.appName) {
+
+        this.specificAppData = v[i]
+      }
+
+    }
+
+
   }
   doExecuteCommand(params) {
     this.apiService.executeCommand(params).subscribe((data: any[]) => {
@@ -188,6 +208,13 @@ export class MsTeamsPage implements OnInit {
     this.doExecuteCommand(myOpt);
   }
   netflixPause() {
+    if (localStorage.getItem("netflixPlay") == "false") {
+      localStorage.setItem("netflixPlay", "true")
+      this.netflixPlay = "true"
+    } else {
+      localStorage.setItem("netflixPlay", "false")
+      this.netflixPlay = "false"
+    };
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
 
     this.commandDataSend = {
@@ -263,6 +290,10 @@ export class MsTeamsPage implements OnInit {
     if (!localStorage.getItem("teamsMic") == true) {
       localStorage.setItem("teamsMic", "false")
       this.mic = "false"
+    }
+    if (!localStorage.getItem("netflixPlay") == true) {
+      localStorage.setItem("netflixPlay", "false")
+      this.netflixPlay = "false"
     }
 
     this.commandData = JSON.parse(localStorage.getItem('currentAppID'));

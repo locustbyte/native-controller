@@ -10,6 +10,7 @@ import { GlobalConstants } from '../../global-constants';
 export class IpconfigPage implements OnInit {
 
   currentIpAddress: string;
+  currentPortAddress: string;
 
   constructor(public modalController: ModalController, public globals: GlobalConstants) { }
 
@@ -21,25 +22,28 @@ export class IpconfigPage implements OnInit {
   }
 
 
-  setIp(ip) {
-    console.log(ip);
-    this.currentIpAddress = ip
-    this.globals.REST_API_IP = ip;
-    this.globals.REST_API_SERVER = "http://" + ip + ":5000/api/system";
+  updateIpPort() {
+
+
+    localStorage.setItem("currentIpAddress", this.currentIpAddress)
+    localStorage.setItem("currentPortAddress", this.currentPortAddress)
+    this.globals.REST_API_IP = this.currentIpAddress;
+    this.globals.REST_API_PORT = this.currentPortAddress;
+    if (this.currentPortAddress == undefined || this.currentPortAddress == '') {
+      this.globals.REST_API_SERVER = "http://" + localStorage.getItem("currentIpAddress") + "/api/system";
+    } else {
+      this.globals.REST_API_SERVER = "http://" + localStorage.getItem("currentIpAddress") + ":" + localStorage.getItem("currentPortAddress") + "/api/system";
+    }
     this.dismiss();
   }
 
-  onIpUpdate(ip) {
-    this.globals.REST_API_IP = ip;
-    this.globals.REST_API_SERVER = "http://" + ip + ":5000/api/system";
-  }
+
 
 
 
   ngOnInit() {
-    console.log(this.globals.REST_API_IP)
-    this.currentIpAddress = this.globals.REST_API_IP;
-    console.log(this.globals.REST_API_SERVER)
+    this.currentIpAddress = localStorage.getItem("currentIpAddress");
+    this.currentPortAddress = localStorage.getItem("currentPortAddress");
   }
 
 }
