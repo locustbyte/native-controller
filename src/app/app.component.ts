@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   userIP: [];
   userPort: [];
   allowedApps = [
-    "TEAMS", "Netflix", "Powerpoint", "Spotify", "NOTEPAD", "APPLICATIONFRAMEHOST"
+    "TEAMS", "Netflix", "Powerpoint", "Spotify", "NOTEPAD", "APPLICATIONFRAMEHOST", "POWERPNT", "Microsoft Teams"
   ]
   preStripArr = [];
   theAppData = []
@@ -32,6 +32,7 @@ export class AppComponent implements OnInit {
   constructor(private sanitizer: DomSanitizer, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
 
   isAllowedAppName(appName) {
+    console.log(appName)
     return this.allowedApps.includes(appName) == true
   }
   getRunningProcesses() {
@@ -40,6 +41,7 @@ export class AppComponent implements OnInit {
     this.globals.APPS_AVAILABLE_MULTIPLE = [];
     this.apiService.getAppsRunning().subscribe((data: any[]) => {
       this.preStripArr = data;
+      console.log(this.preStripArr)
 
 
 
@@ -54,6 +56,7 @@ export class AppComponent implements OnInit {
             var allowed = this.isAllowedAppName(vv)
 
             if (allowed === true) {
+              console.log(v)
               v.title = vv
               v.appName = vv
               v.name = vv.toUpperCase()
@@ -69,6 +72,7 @@ export class AppComponent implements OnInit {
           }
         } else {
           if (allowed === true) {
+            console.log(v)
             this.theAppData.push(v)
           }
         }
@@ -76,6 +80,8 @@ export class AppComponent implements OnInit {
 
 
       }
+
+      console.log(this.theAppData)
 
 
 

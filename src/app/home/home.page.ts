@@ -42,7 +42,7 @@ export class HomePage implements OnInit {
   currentIP: string;
   currentPort: string;
   allowedApps = [
-    "Microsoft Teams", "TEAMS", "Netflix", "Powerpoint", "Spotify", "NOTEPAD", "APPLICATIONFRAMEHOST"
+    "Microsoft Teams", "TEAMS", "Netflix", "Powerpoint", "Spotify", "NOTEPAD", "APPLICATIONFRAMEHOST", "POWERPNT"
   ]
   preStripArr = [];
   theAppData = []

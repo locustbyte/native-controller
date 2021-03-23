@@ -36,28 +36,16 @@ export class MsTeamsPage implements OnInit {
 
   // Get window specific data
   getSpecificApp(app) {
-
-
-    for (const [i, v] of this.globals.APPS_AVAILABLE_SINGULAR.entries()) {
-
-
-      if (v[i].appName == app.appName) {
-
-        this.specificAppData = v[i]
+    this.globals.APPS_AVAILABLE_SINGULAR.forEach((key, value) => {
+      if (key[0].appName == app.appName) {
+        this.specificAppData = key[0]
       }
-
-    }
-    for (const [i, v] of this.globals.APPS_AVAILABLE_MULTIPLE.entries()) {
-
-
-      if (v[i].appName == app.appName) {
-
-        this.specificAppData = v[i]
+    });
+    this.globals.APPS_AVAILABLE_MULTIPLE.forEach((key, value) => {
+      if (key[0].appName == app.appName) {
+        this.specificAppData = key[0]
       }
-
-    }
-
-
+    });
   }
   doExecuteCommand(params) {
     this.apiService.executeCommand(params).subscribe((data: any[]) => {
