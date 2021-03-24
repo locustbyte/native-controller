@@ -12,7 +12,7 @@
           src="assets/images/TEAMS-icon.png"
         />{{specificAppData.appName}}</span
       >
-      <span *ngIf="specificAppData.appName == 'Powerpoint'"
+      <span *ngIf="specificAppData.appName == 'PowerPoint'"
         ><img
           style="width: 50px; vertical-align: middle"
           src="assets/images/POWERPOINT-icon.png"
@@ -38,7 +38,7 @@
 </ion-header>
 
 <ion-content class="no-scroll">
-  <div *ngIf="specificAppData.appName == 'Powerpoint'">
+  <div *ngIf="specificAppData.appName == 'PowerPoint'">
     <ion-row class="text-center m-t-20">
       <ion-col class="touch-icon">
         <div class="modal-title">Title</div>
@@ -168,11 +168,10 @@
       <ion-col size="1"></ion-col>
     </ion-row>
   </div>
-  <div *ngIf="specificAppData.appName == 'Netflix'">
+  <div *ngIf="specificAppData.appName == 'Netflix'" class="modal-control-icons">
     <ion-row class="text-center">
       <ion-col>
         <div class="modal-title">Title</div>
-        <div class="modal-sub-title">Sub title</div>
       </ion-col>
     </ion-row>
     <ion-row class="text-center">
@@ -182,28 +181,34 @@
         </div>
       </ion-col>
     </ion-row>
-    <ion-row class="text-center">
-      <ion-col offset-4>
-        <div (click)="netflixRewind();">
-          <img src="assets/images/rewind-30-icon.png" />
-        </div>
+    <ion-row class="text-center m-t-30">
+      <ion-col size="4" class="text-right">
+        <ion-icon
+          class="control-icon"
+          (click)="netflixRewind();"
+          name="play-back-circle-outline"
+        ></ion-icon>
       </ion-col>
-      <ion-col offset-4>
-        <div>
-          <ion-icon
-            *ngIf="netflixPlay == 'true'"
-            (click)="netflixPause();"
-            name="pause-outline"
-          ></ion-icon>
-          <ion-icon
-            *ngIf="netflixPlay == 'false'"
-            (click)="netflixPause();"
-            name="play-outline"
-          ></ion-icon>
-        </div>
+      <ion-col size="4">
+        <ion-icon
+          class="control-icon"
+          *ngIf="netflixPlay == 'true'"
+          (click)="netflixPause();"
+          name="pause"
+        ></ion-icon>
+        <ion-icon
+          class="control-icon"
+          *ngIf="netflixPlay == 'false'"
+          (click)="netflixPause();"
+          name="play"
+        ></ion-icon>
       </ion-col>
-      <ion-col offset-4>
-        <div (click)="netflixStop();"><img src="assets/images/stop.png" /></div>
+      <ion-col size="4" class="text-left">
+        <ion-icon
+          class="control-icon"
+          (click)="netflixStop();"
+          name="stop-outline"
+        ></ion-icon>
       </ion-col>
     </ion-row>
   </div>

@@ -42,7 +42,7 @@ export class HomePage implements OnInit {
   currentIP: string;
   currentPort: string;
   allowedApps = [
-    "Microsoft Teams", "TEAMS", "Netflix", "Powerpoint", "Spotify", "NOTEPAD", "APPLICATIONFRAMEHOST", "POWERPNT"
+    "Microsoft Teams", "TEAMS", "Netflix", "PowerPoint", "Spotify", "NOTEPAD", "APPLICATIONFRAMEHOST", "POWERPNT"
   ]
   preStripArr = [];
   theAppData = []
@@ -58,6 +58,7 @@ export class HomePage implements OnInit {
     return this.allowedApps.includes(appName) == true
   }
   isAllowedApp(appName) {
+    console.log(appName)
 
     if (this.allowedApps.includes(appName.appName) == true) {
       this.presentModal(appName, 'true')

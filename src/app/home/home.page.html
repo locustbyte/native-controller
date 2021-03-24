@@ -1,11 +1,14 @@
 <ion-header [translucent]="true">
   <ion-toolbar class="custom-toolbar">
     <ion-buttons slot="start">
-      <ion-button (click)="presentIPModal();">
-        <ion-icon name="settings-outline"></ion-icon>
+      <ion-button
+        (click)="presentIPModal();"
+        style="color: white; font-size: 24px"
+      >
+        <ion-icon style="color: white" name="settings-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title class="text-center p-r-30"
+    <ion-title class="text-center"
       >Active Apps ({{globals.APPS_AVAILABLE_SINGULAR.length +
       globals.APPS_AVAILABLE_MULTIPLE.length}})<br />
       <small>Machine {{currentIP}}:{{currentPort}}</small></ion-title
@@ -120,7 +123,10 @@
         </ion-col>
         <ion-col size="10">
           <p class="app-title">{{appMultiple.value[0].appName}}</p>
-          <p class="app-description" *ngIf="appMultiple.value[0].length > 1">
+          <p
+            class="app-description"
+            *ngIf="appMultiple.value[0].windows.length > 1"
+          >
             {{appMultiple.value[0].windows.length }} open window(s)
           </p>
         </ion-col>

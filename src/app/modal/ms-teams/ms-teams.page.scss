@@ -18,11 +18,22 @@ ion-toolbar {
     --border-color: transparent;
     height: 90px;
 }
+.text-left {
+    text-align: left;
+}
+.text-right {
+    text-align: right;
+}
 .white-text {
     color: white;
 }
 .text-bold {
     font-weight: bold;
+}
+.modal-control-icons {
+    .control-icon {
+        font-size: 50px !important;
+    }
 }
 .netflix-poster {
     img {
@@ -118,8 +129,10 @@ ion-item::part(native) {
     padding: 0;
 }
 main::part(scroll) {
+    padding: 20px !important;
     //overflow: hidden i !important;
 }
+
 :root {
     ion-range {
         --bar-background: transparent;

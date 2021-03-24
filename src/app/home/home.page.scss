@@ -28,6 +28,10 @@
     transform: translateY(-50%);
   }
 }
+.custom-toolbar {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(16, 16, 16, 1) 100%, rgba(16, 16, 16, 1) 100%);
+}
 .broken {
   height: 100%;
   background: url("../../assets/images/broken.jpg");
