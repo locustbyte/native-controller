@@ -1,12 +1,12 @@
 <ion-header>
-  <ion-toolbar style="padding: 20px">
+  <ion-toolbar class="modal-toolbar">
     <ion-buttons slot="start">
       <ion-button fill="clear" (click)="dismiss();">
         <ion-icon class="white-text" name="chevron-down-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title class="text-center">
-      <span> Set IP</span>
+      <p>Set IP</p>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -15,38 +15,51 @@
   <ion-row class="text-center">
     <ion-col class="modal-title" style="padding: 20px">
       <ion-item>
-        <ion-label position="stacked">Current IP Address</ion-label>
+        <ion-label class="ion-input-label" position="stacked"
+          >Current IP Address</ion-label
+        >
         <ion-input
           style="height: 80px; font-size: 30px"
           [value]="globals.REST_API_IP"
           [(ngModel)]="currentIpAddress"
           (keyup.enter)="updateIpPort()"
-          clearInput
-          placeholder="Current IP"
+          placeholder="Enter IP"
           required
+          tabindex="0"
         ></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">Current Port Setting</ion-label>
+        <ion-label class="ion-input-label" position="stacked" tabindex="-1"
+          >Current Port Setting</ion-label
+        >
         <ion-input
           style="height: 80px; font-size: 30px"
           [value]="globals.REST_API_PORT"
           [(ngModel)]="currentPortAddress"
           (keyup.enter)="updateIpPort()"
-          clearInput
-          placeholder="Current PORT"
+          placeholder="Enter PORT"
           required
+          tabindex="1"
         ></ion-input>
       </ion-item>
+
+      <ion-button
+        *ngIf="previousSettingsExist === true"
+        expand="block"
+        color="warning"
+        (click)="setPreviousIPPORT();"
+        >USE PREVIOUS</ion-button
+      >
 
       <p class="m-t-20">
         Simply enter the new IP address <br />and PORT (if required) then hit
         UPDATE button below
       </p>
-      <p>Change takes effect immediately</p>
-      <ion-button expand="block" (click)="updateIpPort();"
-        >A block button</ion-button
+
+      <ion-button expand="block" color="light" (click)="updateIpPort();"
+        >FETCH DATA</ion-button
       >
+      <p>Change takes effect immediately</p>
     </ion-col>
   </ion-row>
 </ion-content>

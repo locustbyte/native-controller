@@ -1,0 +1,12 @@
+{
+    "/api/*": {
+        "target": "http://192.168.1.159:5000",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug",
+        "pathRewrite": {
+            "^/api/apps/running": "/api/system/apps/running",
+            "^/api": ""
+        }
+    }
+}

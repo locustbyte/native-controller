@@ -1,20 +1,14 @@
 import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { MsTeamsPage } from './../modal/ms-teams/ms-teams.page';
+import { MsTeamsPage } from '../modal/modals/ms-teams.page';
 import { IpconfigPage } from './../modal/ipconfig/ipconfig.page';
 import { Observable } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ApiService } from "../services/api.service";
 import { GlobalConstants } from './../global-constants';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CleandataService } from "../services/cleandata.service";
 
-
-class RunningProcesses {
-  id: number;
-  name: string;
-  processStartName: string;
-  title: string;
-}
 
 
 const httpOptions = {
@@ -41,26 +35,17 @@ export class HomePage implements OnInit {
 
   currentIP: string;
   currentPort: string;
-  allowedApps = [
-    "Microsoft Teams", "TEAMS", "Netflix", "PowerPoint", "Spotify", "NOTEPAD", "APPLICATIONFRAMEHOST", "POWERPNT"
-  ]
-  preStripArr = [];
-  theAppData = []
+
+  constructor(private cleanData: CleandataService, private sanitizer: DomSanitizer, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
 
 
-
-  constructor(private sanitizer: DomSanitizer, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
-
-
-  runningProcessesObservable: Observable<RunningProcesses[]>;
   isAllowedAppName(appName) {
-
-    return this.allowedApps.includes(appName) == true
+    return this.globals.APPS_ALLOWED_APPS.includes(appName) == true
   }
   isAllowedApp(appName) {
     console.log(appName)
 
-    if (this.allowedApps.includes(appName.appName) == true) {
+    if (this.globals.APPS_ALLOWED_APPS.includes(appName.appName) == true) {
       this.presentModal(appName, 'true')
     } else {
       this.doFocusWindow(appName)
@@ -72,7 +57,7 @@ export class HomePage implements OnInit {
       cssClass: 'my-custom-class'
     });
     modal.onDidDismiss().then((dataReturned) => {
-
+      this.globals.LOADING = true
       if (dataReturned !== null) {
         if (dataReturned.data.dismissed == true) {
           this.dataReturned = dataReturned.data;
@@ -149,76 +134,7 @@ export class HomePage implements OnInit {
     })
   }
   getRunningProcesses() {
-    this.globals.APPS_AVAILABLE_SINGULAR = [];
-    this.globals.APPS_AVAILABLE_MULTIPLE = [];
-    this.apiService.getAppsRunning().subscribe((data: any[]) => {
-      this.preStripArr = data;
-
-
-      for (const [i, v] of this.preStripArr.entries()) {
-
-        var allowed = this.isAllowedAppName(v.name)
-
-        if (v.name == "APPLICATIONFRAMEHOST") {
-          for (const [ii, vv] of v.windowTitles.entries()) {
-
-            var allowed = this.isAllowedAppName(vv)
-
-            if (allowed === true) {
-              v.title = vv
-              v.appName = vv
-              v.name = vv.toUpperCase()
-              v.switched = true
-
-              v.windowTitles = [];
-              var [windowTitleTemp] = [vv]
-              v.windowTitles = ([windowTitleTemp])
-
-              v.windows = [v.windows[ii]];
-              this.theAppData.push(v)
-            }
-          }
-        } else {
-          if (allowed === true) {
-            this.theAppData.push(v)
-          }
-        }
-
-
-
-      }
-
-
-
-
-      let group = this.theAppData.reduce((r, a) => {
-        //
-        // 
-        r[a.name] = [...r[a.name] || [], a];
-        return r;
-      }, {});
-
-      const objectArray = Object.entries(group)
-
-
-
-      objectArray.forEach(([key, value]) => {
-        if (value[0].windows.length > 1) {
-          this.globals.APPS_AVAILABLE_MULTIPLE.push(value)
-        }
-        if (value[0].windows.length == 1) {
-          this.globals.APPS_AVAILABLE_SINGULAR.push(value)
-        }
-      });
-
-
-
-
-
-
-      // 
-      // this.getItems(this.theRunningApps2, "Microsoft Teams")
-    })
+    this.cleanData.cleanUpData()
   }
 
 

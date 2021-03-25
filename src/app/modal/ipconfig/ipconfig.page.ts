@@ -11,6 +11,7 @@ export class IpconfigPage implements OnInit {
 
   currentIpAddress: string;
   currentPortAddress: string;
+  previousSettingsExist: boolean;
 
   constructor(public modalController: ModalController, public globals: GlobalConstants) { }
 
@@ -21,7 +22,10 @@ export class IpconfigPage implements OnInit {
 
   }
 
-
+  setPreviousIPPORT() {
+    this.globals.REST_API_IP = localStorage.getItem("currentIpAddress");
+    this.globals.REST_API_PORT = localStorage.getItem("currentPortAddress");
+  }
   updateIpPort() {
 
 
@@ -44,6 +48,11 @@ export class IpconfigPage implements OnInit {
   ngOnInit() {
     this.currentIpAddress = localStorage.getItem("currentIpAddress");
     this.currentPortAddress = localStorage.getItem("currentPortAddress");
+
+    if (this.currentIpAddress) {
+      alert('mjb')
+      this.previousSettingsExist = true
+    }
 
 
   }

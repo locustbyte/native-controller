@@ -54,6 +54,8 @@ export class ApiService {
 
 
   public getAppsRunning() {
+    this.globals.APPS_AVAILABLE_SINGULAR = [];
+    this.globals.APPS_AVAILABLE_MULTIPLE = [];
     //setTimeout(function () {
     return this.httpClient.get<any>(this.globals.REST_API_SERVER + "/apps/running/");
     //}, 5000);

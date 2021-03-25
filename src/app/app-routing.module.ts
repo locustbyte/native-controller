@@ -12,8 +12,8 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'ms-teams',
-    loadChildren: () => import('./modal/ms-teams/ms-teams.module').then(m => m.MsTeamsPageModule)
+    path: 'modals',
+    loadChildren: () => import('./modal/modals/ms-teams.module').then(m => m.MsTeamsPageModule)
   },
   {
     path: 'ipconfig',

@@ -1,12 +1,10 @@
 import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { MsTeamsPage } from './modal/ms-teams/ms-teams.page';
-import { IpconfigPage } from './modal/ipconfig/ipconfig.page';
-import { Observable } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ApiService } from "./services/api.service";
+import { CleandataService } from "./services/cleandata.service";
 import { GlobalConstants } from './global-constants';
-import { DomSanitizer } from '@angular/platform-browser';
+
 
 
 @Component({
@@ -23,101 +21,16 @@ export class AppComponent implements OnInit {
   userNetwork: any;
   userIP: [];
   userPort: [];
-  allowedApps = [
-    "TEAMS", "Netflix", "Powerpoint", "Spotify", "NOTEPAD", "APPLICATIONFRAMEHOST", "POWERPNT", "Microsoft Teams"
-  ]
-  preStripArr = [];
-  theAppData = []
 
-  constructor(private sanitizer: DomSanitizer, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
+
+  constructor(private cleanData: CleandataService, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
 
   isAllowedAppName(appName) {
     console.log(appName)
-    return this.allowedApps.includes(appName) == true
+    return this.globals.APPS_ALLOWED_APPS.includes(appName) == true
   }
   getRunningProcesses() {
-    this.globals.LOADING = true
-    this.globals.APPS_AVAILABLE_SINGULAR = [];
-    this.globals.APPS_AVAILABLE_MULTIPLE = [];
-    this.apiService.getAppsRunning().subscribe((data: any[]) => {
-      this.preStripArr = data;
-      console.log(this.preStripArr)
-
-
-
-
-      for (const [i, v] of this.preStripArr.entries()) {
-
-        var allowed = this.isAllowedAppName(v.name)
-
-        if (v.name == "APPLICATIONFRAMEHOST") {
-          for (const [ii, vv] of v.windowTitles.entries()) {
-
-            var allowed = this.isAllowedAppName(vv)
-
-            if (allowed === true) {
-              console.log(v)
-              v.title = vv
-              v.appName = vv
-              v.name = vv.toUpperCase()
-              v.switched = true
-
-              v.windowTitles = [];
-              var [windowTitleTemp] = [vv]
-              v.windowTitles = ([windowTitleTemp])
-
-              v.windows = [v.windows[ii]];
-              this.theAppData.push(v)
-            }
-          }
-        } else {
-          if (allowed === true) {
-            console.log(v)
-            this.theAppData.push(v)
-          }
-        }
-
-
-
-      }
-
-      console.log(this.theAppData)
-
-
-
-
-      let group = this.theAppData.reduce((r, a) => {
-        //
-        // 
-        r[a.name] = [...r[a.name] || [], a];
-        return r;
-      }, {});
-
-      const objectArray = Object.entries(group)
-
-
-
-      objectArray.forEach(([key, value]) => {
-        if (value[0].windows.length > 1) {
-          this.globals.APPS_AVAILABLE_MULTIPLE.push(value)
-        }
-        if (value[0].windows.length == 1) {
-          this.globals.APPS_AVAILABLE_SINGULAR.push(value)
-        }
-      });
-      console.log(this.globals.APPS_AVAILABLE_SINGULAR)
-      console.log(this.globals.APPS_AVAILABLE_MULTIPLE)
-      console.log(this.globals.LOADING)
-
-      setTimeout(() => {
-        this.globals.LOADING = false;
-      }, 0);
-
-
-
-      // 
-      // this.getItems(this.theRunningApps2, "Microsoft Teams")
-    })
+    this.cleanData.cleanUpData()
   }
   grabUserIpAddress() {
     this.httpClient.get("assets/ipAddress.json").subscribe(data => {
