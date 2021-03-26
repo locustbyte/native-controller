@@ -35,6 +35,11 @@
   margin-top: 50%;
   transform: translateY(-50%);
 }
+ion-footer,
+.custom-footer {
+  height: 50px !important;
+  padding: 10px;
+}
 .custom-toolbar {
   background: linear-gradient(0deg, black 0%, #4c4646 100%, #7b1e1e 100%);
 }
