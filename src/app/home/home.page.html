@@ -29,15 +29,24 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true"
-  ><div class="loader-screen" *ngIf="this.globals.LOADING == true">
-    <h1>Fetching your apps...</h1>
+<ion-content [fullscreen]="true">
+  <div class="loader-screen" *ngIf="this.globals.LOADING == true">
+    <h1>Locating Server...</h1>
     <img src="assets/images/svg-css-loaders/ball-triangle.svg" />
   </div>
-  <ion-row
-    class="error-screen text-center"
-    *ngIf="apiError?.api_error == 'true'"
+  <div class="loader-screen" *ngIf="this.globals.LOADINGDATA == true">
+    <h1>Fetching Apps...</h1>
+    <img src="assets/images/svg-css-loaders/ball-triangle.svg" />
+  </div>
+  <div
+    class="loader-screen"
+    *ngIf="apiError?.active != true && apiError?.type == 'GETSERVER'"
   >
+    <h1>Locating server...</h1>
+    <img src="assets/images/svg-css-loaders/ball-triangle.svg" />
+  </div>
+
+  <ion-row class="error-screen text-center" *ngIf="apiError?.active == true">
     <ion-col>
       <ion-card class="error-card">
         <img src="assets/images/broken-robot.png" />
@@ -54,9 +63,13 @@
               class="error-ip"
               *ngIf="globals.REST_API_IP == null || this.globals.REST_API_IP"
             >
-              {{globals.REST_API_IP}}
+              {{globals.REST_API_IP}}<span *ngIf="globals.REST_API_PORT"
+                >:{{globals.REST_API_PORT}}</span
+              >
             </p>
-            <p *ngIf="globals.REST_API_PORT">:{{globals.REST_API_PORT}}</p>
+            <p class="m-t-10" *ngIf="apiError?.active == true">
+              Have you checked that the Broker service is running on the server
+            </p>
           </div>
           <ion-button
             color="success"
@@ -77,7 +90,9 @@
     </ion-col>
   </ion-row>
 
-  <ion-row *ngIf="this.globals.LOADING == false">
+  <ion-row
+    *ngIf="this.globals.LOADINGDATA == false && this.globals.LOADING == false"
+  >
     <ion-col>
       <ion-row
         class="m-t-30"

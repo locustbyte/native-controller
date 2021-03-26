@@ -29,14 +29,16 @@ export class HttpConfigInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(
             map((event: HttpEvent<any>) => {
                 var currReqPath = request.url;
+                this.globals.API_ERROR = [{
+                    "active": false,
+                    "type": "API"
+                }]
                 if (currReqPath.includes('commandName=Leave')) {
                     this.globals.API_DELAY_CALL = true;
                     // Close modal and call api for fresh app list
                     this.modalController.dismiss({ 'dismissed': 'leaveTeamsCall' })
                 }
                 if (event instanceof HttpResponse) {
-                    this.globals.API_ERROR = false;
-                    this.globals.API_ERROR_TYPE = null;
                 }
                 return event;
             }),
@@ -46,22 +48,18 @@ export class HttpConfigInterceptor implements HttpInterceptor {
                     reason: error && error.error && error.error.reason ? error.error.reason : '',
                     status: error.status
                 };
-                console.log(error.url)
-                if (error.url.indexOf(this.globals.REST_API_SERVER + this.globals.API_CURRENT_PATH) !== -1) {
-                    console.log('true')
-                    this.globals.LOADING = false;
-                    this.globals.API_ERROR = true;
-                    this.globals.API_ERROR_TYPE = 'NOAPI';
-                }
-                if (error.url.indexOf(this.globals.API_CURRENT_PATH) !== -1) {
-                    if (this.globals.API_CURRENT_PATH) {
-                        if (this.globals.API_CURRENT_PATH == '/apps/running/') {
-                            this.globals.LOADING = false;
-                            this.globals.API_ERROR = true;
-                            this.globals.API_ERROR_TYPE = 'NOAPI';
-                        }
+                this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.globals.REST_API_IP = u.currIP));
+                this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.globals.REST_API_PORT = u.currPORT));
+                if (error.url) {
+                    if (new String("http://" + this.globals.REST_API_IP + "/api/system/apps/running/").valueOf() == new String("http://null/api/system/apps/running/").valueOf()) {
+                        this.globals.API_ERROR = [{
+                            "active": true,
+                            "type": "GETSERVER"
+                        }]
+                        this.currentIPPORT.setValue({ "active": true });
+                        this.currentIPPORT.subscriptionApiError = this.currentIPPORT.checkIfApiError(this.globals.API_ERROR).subscribe(u => u);
+                        this.globals.LOADING = false;
                     }
-
                 }
                 // this.globals.API_ERROR = true;
                 // this.globals.API_ERROR_TYPE = error.status;

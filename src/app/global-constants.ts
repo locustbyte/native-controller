@@ -10,8 +10,9 @@ export class GlobalConstants {
     public CURRENT_MODAL: any;
     public API_DELAY_CALL = false;
     public API_CURRENT_PATH = "/apps/running/";
-    public API_ERROR = false;
+    public API_ERROR = [];
     public API_ERROR_TYPE = null;
     public LOADING = true;
+    public LOADINGDATA = false;
     public errorActive = false;
 }

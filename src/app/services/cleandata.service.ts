@@ -21,6 +21,8 @@ export class CleandataService {
     this.globals.APPS_AVAILABLE_SINGULAR = [];
     this.globals.APPS_AVAILABLE_MULTIPLE = [];
     this.apiService.getAppsRunning().subscribe((data: any[]) => {
+      this.globals.LOADING = false;
+      this.globals.LOADINGDATA = true;
       this.preStripArr = [];
       this.theAppData = [];
       this.preStripArr = data;
@@ -60,12 +62,10 @@ export class CleandataService {
           this.globals.APPS_AVAILABLE_SINGULAR.push(value)
         }
       });
-      console.log(this.globals.APPS_AVAILABLE_SINGULAR)
-      console.log(this.globals.APPS_AVAILABLE_MULTIPLE)
       setTimeout(() => {
-        this.globals.LOADING = false;
+        this.globals.LOADINGDATA = false;
         this.globals.API_DELAY_CALL = false;
-      }, 0);
+      }, 2000);
     })
   }
   public cleanUpData() {
@@ -78,6 +78,5 @@ export class CleandataService {
     } else {
       this.callAppsApi()
     }
-
   }
 }

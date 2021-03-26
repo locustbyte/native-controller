@@ -31,8 +31,8 @@ export class HomePage implements OnInit {
   dataReturned = []
   thumbnail: any;
   currMachine: any;
-
-  constructor(private currentIPPORT: CurrentIpPortService, private cleanData: CleandataService, private sanitizer: DomSanitizer, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
+  apiError: object;
+  constructor(public currentIPPORT: CurrentIpPortService, private cleanData: CleandataService, private sanitizer: DomSanitizer, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
   isAllowedAppName(appName) {
     return this.globals.APPS_ALLOWED_APPS.includes(appName) == true
   }
@@ -72,7 +72,6 @@ export class HomePage implements OnInit {
       if (dataReturned.data.dismissed == 'leaveTeamsCall' || dataReturned.data.dismissed == 'updatedIpPort') {
         this.globals.API_DELAY_CALL = true;
         this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u));
-        console.log(this.currMachine)
         this.cleanData.cleanUpData();
       }
     });
@@ -88,6 +87,9 @@ export class HomePage implements OnInit {
   }
   ngOnInit() {
     this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u));
+    this.currentIPPORT.subscriptionApiError = this.currentIPPORT.checkIfApiError(this.globals.API_ERROR).subscribe(u => (this.apiError = u));
+    this.currentIPPORT.getValue().subscribe((value) => {
+      this.apiError = value;
+    });
   }
-
 }

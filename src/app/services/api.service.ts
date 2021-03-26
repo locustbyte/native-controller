@@ -24,7 +24,7 @@ export class ApiService {
   }
   // Get all applications running on host
   public getAppsRunning() {
-    console.log(this.currentIPPORT)
+    this.currentIPPORT.setValue({ "active": false });
     this.globals.API_CURRENT_PATH = "/apps/running/"
     return this.httpClient.get<any>(this.globals.REST_API_SERVER + this.globals.API_CURRENT_PATH);
   }
