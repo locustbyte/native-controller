@@ -16,9 +16,17 @@ export class CurrentIpPortService {
   apiError = this.globals.API_ERROR;
   constructor(public globals: GlobalConstants) {
     this.routerInfo = new BehaviorSubject<object>({ "active": false });
+    this.currentViewingApp = new BehaviorSubject<object>({})
     this.subscription = this.getAsyncData().subscribe(u => (this.currMachine = u));
     this.subscriptionApiError = this.checkIfApiError(this.globals.API_ERROR).subscribe(u => u);
   }
+  getViewingNow(): Observable<object> {
+    return this.currentViewingApp.asObservable();
+  }
+  setViewingNow(newValue): void {
+    this.currentViewingApp.next(newValue);
+  }
+
   getValue(): Observable<object> {
     return this.routerInfo.asObservable();
   }

@@ -154,7 +154,10 @@
                           color: #929292;
                         "
                       >
-                        Viewing now
+                        {{appSingular.value[0].currentlyViewing }}
+                        <span *ngIf="appSingular.value[0]?.currentlyViewing"
+                          >Viewing now</span
+                        >
                       </p>
                       <p
                         style="

@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { ApiService } from "../../services/api.service";
 import { GlobalConstants } from '../../global-constants';
+import { CurrentIpPortService } from "../../services/current-ip-port.service";
 @Component({
   selector: 'app-ms-teams',
   templateUrl: './ms-teams.page.html',
@@ -21,7 +22,7 @@ export class MsTeamsPage implements OnInit {
   commandDataSend = {};
   specificAppData = {};
   @Input() app: number;
-  constructor(public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
+  constructor(public currentIPPORT: CurrentIpPortService, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
   dismiss() {
     this.modalController.dismiss({
       'dismissed': true
@@ -30,9 +31,13 @@ export class MsTeamsPage implements OnInit {
   // Get window specific data
   getSpecificApp(app) {
     console.log(app)
+    this.currentIPPORT.setViewingNow(app);
     this.globals.APPS_AVAILABLE_SINGULAR.forEach((key, value) => {
       if (key[0].appName == app.appName) {
         this.specificAppData = key[0]
+        console.log(key[0])
+        key[0].cuurentlyViewing = true
+        console.log(this.globals.APPS_AVAILABLE_SINGULAR)
       }
     });
     this.globals.APPS_AVAILABLE_MULTIPLE.forEach((key, value) => {
