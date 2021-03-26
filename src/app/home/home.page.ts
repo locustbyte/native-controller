@@ -2,15 +2,13 @@ import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { MsTeamsPage } from '../modal/modals/ms-teams.page';
 import { IpconfigPage } from './../modal/ipconfig/ipconfig.page';
-import { Observable } from "rxjs";
+import { Observable, of, Subscription } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ApiService } from "../services/api.service";
 import { GlobalConstants } from './../global-constants';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CleandataService } from "../services/cleandata.service";
-
-
-
+import { CurrentIpPortService } from "../services/current-ip-port.service";
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/xml',
@@ -32,126 +30,64 @@ export class HomePage implements OnInit {
   randTest = []
   dataReturned = []
   thumbnail: any;
+  currMachine: any;
 
-  currentIP: string;
-  currentPort: string;
-
-  constructor(private cleanData: CleandataService, private sanitizer: DomSanitizer, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
-
-
+  constructor(private currentIPPORT: CurrentIpPortService, private cleanData: CleandataService, private sanitizer: DomSanitizer, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
   isAllowedAppName(appName) {
     return this.globals.APPS_ALLOWED_APPS.includes(appName) == true
   }
   isAllowedApp(appName) {
-    console.log(appName)
-
     if (this.globals.APPS_ALLOWED_APPS.includes(appName.appName) == true) {
-      this.presentModal(appName, 'true')
+      this.presentModal(appName, 'true', MsTeamsPage)
     } else {
       this.doFocusWindow(appName)
     }
   }
-  async presentIPModal() {
-    const modal = await this.modalController.create({
-      component: IpconfigPage,
-      cssClass: 'my-custom-class'
-    });
-    modal.onDidDismiss().then((dataReturned) => {
-      this.globals.LOADING = true
-      if (dataReturned !== null) {
-        if (dataReturned.data.dismissed == true) {
-          this.dataReturned = dataReturned.data;
-          this.appsSingular = []
-          this.appsMultiple = []
-          this.getRunningProcesses()
-        }
-        //alert('Modal Sent Data :'+ dataReturned);
-      }
-    });
-    return await modal.present();
-    this.currentModal = modal;
+  doPresentIPModal() {
+    this.presentModal(null, null, IpconfigPage)
   }
-  async presentModal(event, trusted) {
-
-    this.doFocusWindow(event)
-    localStorage.setItem('currentAppID', JSON.stringify(event));
-    const modal = await this.modalController.create({
-      component: MsTeamsPage,
-      cssClass: 'my-custom-class',
-      componentProps: {
-        'app': event.path
-      }
-    });
-    modal.onDidDismiss().then((dataReturned) => {
-
-      if (dataReturned !== null) {
-        if (dataReturned.data.dismissed == true) {
-          this.dataReturned = dataReturned.data;
-          // Should think about syncing the new app list here
-          // this.appsSingular = []
-          // this.appsMultiple = []
-          // this.getRunningProcesses()
+  async presentModal(event, trusted, type) {
+    var options
+    if (type.name == 'MsTeamsPage') {
+      options = {
+        component: type,
+        cssClass: 'my-custom-class',
+        componentProps: {
+          'app': event.path
         }
       }
-    });
-    return await modal.present();
-    this.currentModal = modal;
-    //this.doFocusWindow(event)
-  }
-
-  shallShowModal(params) {
-    if (params.appName == 'Microsoft Teams' || params.appName == 'Netflix' || params.appName == 'Powerpoint' || params.appName == 'Spotify') {
-      this.presentModal(params, false)
-    } else {
-
-      this.doFocusWindow(params)
+      this.doFocusWindow(event)
     }
-
-
+    if (type.name == 'IpconfigPage') {
+      options = {
+        component: IpconfigPage,
+        cssClass: 'my-custom-class'
+      }
+    }
+    localStorage.setItem('currentAppID', JSON.stringify(event));
+    this.globals.CURRENT_MODAL = await this.modalController.create(
+      options
+    );
+    this.globals.CURRENT_MODAL.onDidDismiss().then((dataReturned) => {
+      if (dataReturned.data.dismissed == 'leaveTeamsCall' || dataReturned.data.dismissed == 'updatedIpPort') {
+        this.globals.API_DELAY_CALL = true;
+        this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u));
+        console.log(this.currMachine)
+        this.cleanData.cleanUpData();
+      }
+    });
+    this.currentModal = this.globals.CURRENT_MODAL;
+    return await this.globals.CURRENT_MODAL.present();
   }
-
-
-  getSnapshot(params) {
-    this.apiService.getSnapshot(params)
-      .subscribe((baseImage: any) => {
-
-        alert(JSON.stringify(baseImage));
-        let objectURL = 'data:image/jpeg;base64,' + baseImage.image;
-
-        this.thumbnail = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-
-      });
-  }
-
-
   doFocusWindow(params) {
-
-
     this.apiService.doSetWindowFocus(params).subscribe((data: any) => {
-
-
-
     })
   }
   getRunningProcesses() {
     this.cleanData.cleanUpData()
   }
-
-
   ngOnInit() {
-
-    if (localStorage.getItem("currentIpAddress")) {
-      this.currentIP = localStorage.getItem("currentIpAddress")
-    } else {
-      this.currentIP = this.globals.REST_API_IP
-    }
-    if (localStorage.getItem("currentPortAddress")) {
-      this.currentPort = localStorage.getItem("currentPortAddress")
-    } else {
-      this.currentPort = this.globals.REST_API_PORT
-    }
-
+    this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u));
   }
-
 
 }

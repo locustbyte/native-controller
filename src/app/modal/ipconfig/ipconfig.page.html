@@ -10,7 +10,6 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content class="no-scroll">
   <ion-row class="text-center">
     <ion-col class="modal-title" style="padding: 20px">
@@ -42,24 +41,14 @@
           tabindex="1"
         ></ion-input>
       </ion-item>
-
-      <ion-button
-        *ngIf="previousSettingsExist === true"
-        expand="block"
-        color="warning"
-        (click)="setPreviousIPPORT();"
-        >USE PREVIOUS</ion-button
-      >
-
-      <p class="m-t-20">
+      <h6 class="m-t-20">
         Simply enter the new IP address <br />and PORT (if required) then hit
         UPDATE button below
-      </p>
-
-      <ion-button expand="block" color="light" (click)="updateIpPort();"
-        >FETCH DATA</ion-button
+      </h6>
+      <ion-button expand="medium" color="success" (click)="updateIpPort();"
+        >UPDATE</ion-button
       >
-      <p>Change takes effect immediately</p>
+      <h6 class="m-t-20">Change takes effect immediately</h6>
     </ion-col>
   </ion-row>
 </ion-content>

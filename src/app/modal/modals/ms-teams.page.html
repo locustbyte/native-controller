@@ -36,7 +36,6 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 <ion-content class="no-scroll">
   <div *ngIf="specificAppData.appName == 'PowerPoint'">
     <ion-row class="text-center m-t-20">
@@ -65,7 +64,7 @@
     </ion-row>
     <ion-row class="text-center pp-boxes">
       <ion-col offset-4>
-        <div (click)="ppNewSlide();"><p>dNew slide</p></div>
+        <div (click)="ppNewSlide();"><p>New slide</p></div>
       </ion-col>
       <ion-col offset-4>
         <div (click)="ppDuplicateSlide();"><p>Duplicate slide</p></div>
@@ -160,7 +159,6 @@
               size="medium"
               name="volume-low-outline"
             ></ion-icon>
-
             <ion-icon slot="end" name="volume-high-outline"></ion-icon>
           </ion-range>
         </ion-item>

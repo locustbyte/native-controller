@@ -3,14 +3,12 @@ import { ModalController } from '@ionic/angular';
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { ApiService } from "../../services/api.service";
 import { GlobalConstants } from '../../global-constants';
-
 @Component({
   selector: 'app-ms-teams',
   templateUrl: './ms-teams.page.html',
   styleUrls: ['./ms-teams.page.scss'],
 })
 export class MsTeamsPage implements OnInit {
-
   mic = localStorage.getItem("teamsMic");;
   camera = localStorage.getItem("teamsCamera");
   hand = localStorage.getItem("teamsHand");
@@ -23,17 +21,12 @@ export class MsTeamsPage implements OnInit {
   commandDataSend = {};
   specificAppData = {};
   @Input() app: number;
-
   constructor(public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
-
   dismiss() {
     this.modalController.dismiss({
       'dismissed': true
     })
   }
-
-
-
   // Get window specific data
   getSpecificApp(app) {
     this.globals.APPS_AVAILABLE_SINGULAR.forEach((key, value) => {
@@ -117,11 +110,9 @@ export class MsTeamsPage implements OnInit {
     myOpt.appCommand = "Raise"
     this.doExecuteCommand(myOpt);
   }
-
   //Powerpoint
   ppPlayFromStart() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -132,7 +123,6 @@ export class MsTeamsPage implements OnInit {
   }
   ppPlayFromCurrentSlide() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -143,7 +133,6 @@ export class MsTeamsPage implements OnInit {
   }
   ppPrint() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -182,11 +171,9 @@ export class MsTeamsPage implements OnInit {
     myOpt.appCommand = "DuplicateSlide"
     this.doExecuteCommand(myOpt);
   }
-
   //Netflix
   netflixRewind() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -204,7 +191,6 @@ export class MsTeamsPage implements OnInit {
       this.netflixPlay = "false"
     };
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -215,7 +201,6 @@ export class MsTeamsPage implements OnInit {
   }
   netflixStop() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -224,12 +209,9 @@ export class MsTeamsPage implements OnInit {
     myOpt.appCommand = "Stop"
     this.doExecuteCommand(myOpt);
   }
-
-
   // Spotify
   spotifyShuffle() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -240,7 +222,6 @@ export class MsTeamsPage implements OnInit {
   }
   spotifyPlay() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -251,7 +232,6 @@ export class MsTeamsPage implements OnInit {
   }
   spotifyStop() {
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-
     this.commandDataSend = {
       appId: this.commandData.appId,
       windowId: this.commandData.windowId,
@@ -260,13 +240,10 @@ export class MsTeamsPage implements OnInit {
     myOpt.appCommand = "Stop"
     this.doExecuteCommand(myOpt);
   }
-
-
-
   ngOnInit() {
-    // localStorage.removeItem("teamsHand")
-    // localStorage.removeItem("teamsCamera")
-    // localStorage.removeItem("teamsMic")
+    localStorage.removeItem("teamsHand")
+    localStorage.removeItem("teamsCamera")
+    localStorage.removeItem("teamsMic")
     if (!localStorage.getItem("teamsHand") == true) {
       localStorage.setItem("teamsHand", "false")
       this.hand = "false"
@@ -283,10 +260,8 @@ export class MsTeamsPage implements OnInit {
       localStorage.setItem("netflixPlay", "false")
       this.netflixPlay = "false"
     }
-
     this.commandData = JSON.parse(localStorage.getItem('currentAppID'));
     // Initial call to get running apps
     this.getSpecificApp(this.commandData)
   }
-
 }

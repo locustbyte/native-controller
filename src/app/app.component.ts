@@ -4,16 +4,12 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ApiService } from "./services/api.service";
 import { CleandataService } from "./services/cleandata.service";
 import { GlobalConstants } from './global-constants';
-
-
-
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit {
-
   theRunningApps = [];
   theRunningApps2 = [];
   appsSingular = [];
@@ -21,10 +17,7 @@ export class AppComponent implements OnInit {
   userNetwork: any;
   userIP: [];
   userPort: [];
-
-
   constructor(private cleanData: CleandataService, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
-
   isAllowedAppName(appName) {
     console.log(appName)
     return this.globals.APPS_ALLOWED_APPS.includes(appName) == true
@@ -45,14 +38,7 @@ export class AppComponent implements OnInit {
     if (localStorage.getItem("currentPortAddress")) {
       this.globals.REST_API_PORT = localStorage.getItem("currentPortAddress")
     }
-    //
-
-
     this.grabUserIpAddress();
     this.getRunningProcesses();
-
-    //}, 1000);
-
   }
-
 }

@@ -17,12 +17,12 @@ export class CleandataService {
       this.globals.APPS_ALLOWED_APPS = data
     })
   }
-  public cleanUpData() {
+  public callAppsApi() {
     this.globals.APPS_AVAILABLE_SINGULAR = [];
     this.globals.APPS_AVAILABLE_MULTIPLE = [];
-    this.globals.LOADING = true;
-    this.getAllowedApps();
     this.apiService.getAppsRunning().subscribe((data: any[]) => {
+      this.preStripArr = [];
+      this.theAppData = [];
       this.preStripArr = data;
       for (const [i, v] of this.preStripArr.entries()) {
         var allowed = this.isAllowedAppName(v.name)
@@ -60,9 +60,24 @@ export class CleandataService {
           this.globals.APPS_AVAILABLE_SINGULAR.push(value)
         }
       });
+      console.log(this.globals.APPS_AVAILABLE_SINGULAR)
+      console.log(this.globals.APPS_AVAILABLE_MULTIPLE)
       setTimeout(() => {
         this.globals.LOADING = false;
+        this.globals.API_DELAY_CALL = false;
       }, 0);
     })
+  }
+  public cleanUpData() {
+    this.getAllowedApps();
+    if (this.globals.API_DELAY_CALL == true) {
+      this.globals.LOADING = true;
+      setTimeout(() => {
+        this.callAppsApi()
+      }, 1000);
+    } else {
+      this.callAppsApi()
+    }
+
   }
 }

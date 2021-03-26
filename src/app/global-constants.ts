@@ -1,8 +1,4 @@
 import { Injectable, OnInit } from "@angular/core";
-import { Observable } from "rxjs";
-import { environment } from "../environments/environment";
-
-
 @Injectable()
 export class GlobalConstants {
     public REST_API_IP = "127.0.0.1";
@@ -11,8 +7,11 @@ export class GlobalConstants {
     public APPS_AVAILABLE_SINGULAR = [];
     public APPS_AVAILABLE_MULTIPLE = [];
     public APPS_ALLOWED_APPS: any;
+    public CURRENT_MODAL: any;
+    public API_DELAY_CALL = false;
+    public API_CURRENT_PATH = "/apps/running/";
+    public API_ERROR = false;
+    public API_ERROR_TYPE = null;
     public LOADING = true;
     public errorActive = false;
-
-
 }

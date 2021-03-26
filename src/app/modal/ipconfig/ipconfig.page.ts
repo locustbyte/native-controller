@@ -1,34 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { GlobalConstants } from '../../global-constants';
-
+import { CurrentIpPortService } from "../../services/current-ip-port.service";
+import { Observable, of, Subscription } from "rxjs";
 @Component({
   selector: 'app-ipconfig',
   templateUrl: './ipconfig.page.html',
   styleUrls: ['./ipconfig.page.scss'],
 })
 export class IpconfigPage implements OnInit {
-
   currentIpAddress: string;
   currentPortAddress: string;
   previousSettingsExist: boolean;
-
-  constructor(public modalController: ModalController, public globals: GlobalConstants) { }
-
+  subscription: Subscription;
+  constructor(private currentIPPORT: CurrentIpPortService, public modalController: ModalController, public globals: GlobalConstants) { }
   dismiss() {
     this.modalController.dismiss({
-      'dismissed': true
+      'dismissed': 'updatedIpPort'
     })
-
   }
-
   setPreviousIPPORT() {
     this.globals.REST_API_IP = localStorage.getItem("currentIpAddress");
     this.globals.REST_API_PORT = localStorage.getItem("currentPortAddress");
   }
   updateIpPort() {
-
-
     localStorage.setItem("currentIpAddress", this.currentIpAddress)
     localStorage.setItem("currentPortAddress", this.currentPortAddress)
     this.globals.REST_API_IP = this.currentIpAddress;
@@ -40,21 +35,12 @@ export class IpconfigPage implements OnInit {
     }
     this.dismiss();
   }
-
-
-
-
-
   ngOnInit() {
+    console.log(localStorage.getItem("currentIpAddress"))
     this.currentIpAddress = localStorage.getItem("currentIpAddress");
     this.currentPortAddress = localStorage.getItem("currentPortAddress");
-
     if (this.currentIpAddress) {
-      alert('mjb')
       this.previousSettingsExist = true
     }
-
-
   }
-
 }

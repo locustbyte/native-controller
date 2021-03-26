@@ -2,31 +2,38 @@
   text-align: center;
   padding-left: 20px;
 }
-
 #container strong {
   font-size: 20px;
   line-height: 26px;
 }
-
+.error-card {
+  .error-text {
+    color: #d0d0d0;
+    font-weight: bold;
+    .error-ip {
+      margin-top: 10px;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+}
 #container p {
   font-size: 16px;
   line-height: 22px;
-
   color: #8c8c8c;
-
   margin: 0;
 }
-.loading-screen {
-  position: absolute;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.8);
+.error-screen {
+  padding: 20px;
+}
+.loader-screen {
+  text-align: center;
   height: 100%;
-  z-index: 2;
-  div {
-    position: relative;
-    top: 30%;
-    transform: translateY(-50%);
-  }
+  width: 100%;
+  position: relative;
+  margin-top: 50%;
+  transform: translateY(-50%);
 }
 .custom-toolbar {
   background: linear-gradient(0deg, black 0%, #4c4646 100%, #7b1e1e 100%);
@@ -66,7 +73,6 @@
   color: white !important;
   font-size: 18px !important;
 }
-
 ion-content {
   --ion-background-color: black !important;
 }
