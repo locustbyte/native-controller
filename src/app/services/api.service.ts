@@ -22,11 +22,28 @@ export class ApiService {
     }
     this.globals.REST_API_SERVER = "http://" + this.globals.REST_API_IP + ":" + this.globals.REST_API_PORT + "/api/system";
   }
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.error}`);
+    }
+    // Return an observable with a user-facing error message.
+    return throwError(
+      'Something bad happened; please try again later.');
+  }
   // Get all applications running on host
   public getAppsRunning() {
     this.currentIPPORT.setValue({ "active": false });
     this.globals.API_CURRENT_PATH = "/apps/running/"
-    return this.httpClient.get<any>(this.globals.REST_API_SERVER + this.globals.API_CURRENT_PATH);
+    return this.httpClient.get<any>(this.globals.REST_API_SERVER + this.globals.API_CURRENT_PATH).pipe(
+      // catchError(this.handleError)
+    );
   }
   // Set focus to app window
   public doSetWindowFocus(data) {

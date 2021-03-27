@@ -50,6 +50,32 @@ export class HttpConfigInterceptor implements HttpInterceptor {
                 };
                 this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.globals.REST_API_IP = u.currIP));
                 this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.globals.REST_API_PORT = u.currPORT));
+                console.log(error)
+
+                if (new String("http://" + this.globals.REST_API_IP + "/api/system/apps/running/").valueOf() == new String("http://" + this.globals.REST_API_IP + "/api/system/apps/running/").valueOf()) {
+                    if (error.statusText == 'Unknown Error') {
+                        this.globals.API_ERROR = [{
+                            "active": true,
+                            "type": "NOCONNECT"
+                        }]
+                        this.currentIPPORT.setValue({ "active": true });
+                        this.currentIPPORT.subscriptionApiError = this.currentIPPORT.checkIfApiError(this.globals.API_ERROR).subscribe(u => u);
+                        this.globals.LOADING = false;
+                    }
+                    if (error.statusText == 'Not Found') {
+                        this.globals.API_ERROR = [{
+                            "active": true,
+                            "type": "NOTFOUND"
+                        }]
+                        this.currentIPPORT.setValue({ "active": true });
+                        this.currentIPPORT.subscriptionApiError = this.currentIPPORT.checkIfApiError(this.globals.API_ERROR).subscribe(u => u);
+                        this.globals.LOADING = false;
+                    }
+
+                    console.log(this.globals.API_ERROR)
+
+
+                }
                 if (error.url) {
                     if (new String("http://" + this.globals.REST_API_IP + "/api/system/apps/running/").valueOf() == new String("http://null/api/system/apps/running/").valueOf()) {
                         this.globals.API_ERROR = [{

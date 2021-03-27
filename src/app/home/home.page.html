@@ -51,27 +51,47 @@
       <ion-card class="error-card">
         <img src="assets/images/broken-robot.png" />
         <ion-card-header>
-          <ion-card-title *ngIf="globals.API_ERROR_TYPE == 'NOAPI'"
+          <ion-card-title *ngIf="globals.API_ERROR[0].type == 'NOTFOUND'"
             >Cannot find API</ion-card-title
           >
         </ion-card-header>
+        <ion-card-header *ngIf="globals.API_ERROR[0].type == 'NOCONNECT'">
+          <ion-card-title>Could not connect to PC</ion-card-title>
+        </ion-card-header>
         <ion-card-content>
           <div class="error-text">
-            It looks like we're having problems connecting to the<br />
-            Api at:
-            <p
-              class="error-ip"
-              *ngIf="globals.REST_API_IP == null || this.globals.REST_API_IP"
-            >
-              {{globals.REST_API_IP}}<span *ngIf="globals.REST_API_PORT"
-                >:{{globals.REST_API_PORT}}</span
+            <div *ngIf="globals.API_ERROR[0].type == 'NOCONNECT'">
+              It looks like we're having problems connecting to the<br />
+              PC at:
+              <p
+                class="error-ip"
+                *ngIf="globals.REST_API_IP == null || this.globals.REST_API_IP"
               >
-            </p>
-            <p class="m-t-10" *ngIf="apiError?.active == true">
-              Have you checked that the Broker service is running on the server
-            </p>
+                {{globals.REST_API_IP}}<span *ngIf="globals.REST_API_PORT"
+                  >:{{globals.REST_API_PORT}}</span
+                >
+              </p>
+              <p class="m-t-10" *ngIf="apiError?.active == true">
+                Have you checked that the Broker service is running on the
+                server
+              </p>
+            </div>
+            <div *ngIf="globals.API_ERROR[0].type == 'NOTFOUND'">
+              It looks like we're having problems connecting to the<br />
+              Api resource at:
+              <p
+                class="error-ip"
+                *ngIf="globals.REST_API_IP == null || this.globals.REST_API_IP"
+              >
+                {{globals.REST_API_SERVER + globals.API_CURRENT_PATH}}
+              </p>
+              <p class="m-t-10" *ngIf="apiError?.active == true">
+                Check the API resource exists
+              </p>
+            </div>
           </div>
           <ion-button
+            *ngIf="globals.API_ERROR[0].type == 'NOCONNECT'"
             color="success"
             size="small"
             class="m-t-20"
@@ -95,7 +115,7 @@
   >
     <ion-col>
       <ion-row
-        class="m-t-30"
+        class=""
         *ngFor="let appSingular of globals.APPS_AVAILABLE_SINGULAR| keyvalue; let appIndex=index"
       >
         <ion-col>
@@ -107,7 +127,12 @@
               />
             </ion-col>
             <ion-col size="10" style="text-align: left">
-              <p class="app-title">{{appSingular.value[0].name}}</p>
+              <p
+                class="app-title"
+                [class.vertically-align]="appSingular.value.length == 1"
+              >
+                {{appSingular.value[0].name}}
+              </p>
               <p class="app-description" *ngIf="appSingular.value.length > 1">
                 {{appSingular.value.length}} open window(s)
               </p>
