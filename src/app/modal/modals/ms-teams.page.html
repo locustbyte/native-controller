@@ -182,32 +182,30 @@
     </ion-row>
     <ion-row class="text-center m-t-30">
       <ion-col size="4" class="text-right">
-        <ion-icon
-          class="control-icon"
+        <img
+          class="m-t-8"
           (click)="netflixRewind();"
-          name="play-back-circle-outline"
-        ></ion-icon>
+          src="assets/images/back-30.png"
+        />
       </ion-col>
       <ion-col size="4">
-        <ion-icon
-          class="control-icon"
+        <img
           *ngIf="netflixPlay == 'true'"
           (click)="netflixPause();"
-          name="pause"
-        ></ion-icon>
-        <ion-icon
-          class="control-icon"
+          src="assets/images/netflix-pause.png"
+        />
+        <img
           *ngIf="netflixPlay == 'false'"
           (click)="netflixPause();"
-          name="play"
-        ></ion-icon>
+          src="assets/images/netflix-pause.png"
+        />
       </ion-col>
       <ion-col size="4" class="text-left">
-        <ion-icon
-          class="control-icon"
+        <img
+          class="m-t-10"
           (click)="netflixStop();"
-          name="stop-outline"
-        ></ion-icon>
+          src="assets/images/netflix-stop.png"
+        />
       </ion-col>
     </ion-row>
   </div>
