@@ -111,11 +111,11 @@
   </ion-row>
 
   <ion-row
+    class="m-t-50"
     *ngIf="this.globals.LOADINGDATA == false && this.globals.LOADING == false"
   >
     <ion-col>
       <ion-row
-        class=""
         *ngFor="let appSingular of globals.APPS_AVAILABLE_SINGULAR| keyvalue; let appIndex=index"
       >
         <ion-col>

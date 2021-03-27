@@ -90,18 +90,18 @@
       <ion-col size="4">
         <img
           class="touch-icon"
-          *ngIf="hand == 'false'"
+          *ngIf="currState.hand == 'false' || !currState.hand"
           src="assets/images/microsoft-teams/raise-hand.png"
           (click)="switchHand();"
         />
         <img
           class="touch-icon"
-          *ngIf="hand == 'true'"
+          *ngIf="currState.hand == 'true'"
           src="assets/images/microsoft-teams/raise-hand-on.png"
           (click)="switchHand();"
         />
-        <p *ngIf="hand == 'false'">Raise Hand</p>
-        <p *ngIf="hand == 'true'">Lower Hand</p>
+        <p *ngIf="currState.hand == 'false' || !currState.hand ">Raise Hand</p>
+        <p *ngIf="currState.hand == 'true'">Lower Hand</p>
       </ion-col>
       <ion-col size="4">
         <img
@@ -118,34 +118,36 @@
       <ion-col size="4">
         <img
           class="touch-icon"
-          *ngIf="mic == 'false'"
+          *ngIf="currState.mic == 'false' || !currState.mic"
           src="assets/images/microsoft-teams/mute-mic.png"
           (click)="switchMic();"
         />
         <img
           class="touch-icon"
-          *ngIf="mic == 'true'"
+          *ngIf="currState.mic == 'true'"
           src="assets/images/microsoft-teams/unmute-mic.png"
           (click)="switchMic();"
         />
-        <p *ngIf="mic == 'true'">Unmute Mic</p>
-        <p *ngIf="mic == 'false'">Mute Mic</p>
+        <p *ngIf="currState.mic == 'true'">Unmute Mic</p>
+        <p *ngIf="currState.mic == 'false'  || !currState.mic ">Mute Mic</p>
       </ion-col>
       <ion-col size="4">
         <img
           class="touch-icon"
-          *ngIf="camera == 'true'"
+          *ngIf="currState.camera == 'true'"
           src="assets/images/microsoft-teams/camera-on.png"
           (click)="switchCamera();"
         />
         <img
           class="touch-icon"
-          *ngIf="camera == 'false'"
+          *ngIf="currState.camera == 'false'  || !currState.camera"
           src="assets/images/microsoft-teams/camera-off.png"
           (click)="switchCamera();"
         />
-        <p *ngIf="camera == 'true'">Turn Camera Off</p>
-        <p *ngIf="camera == 'false'">Turn Camera On</p>
+        <p *ngIf="currState.camera == 'true'">Camera Off</p>
+        <p *ngIf="currState.camera == 'false'  || !currState.camera">
+          Camera On
+        </p>
       </ion-col>
       <ion-col size="2"></ion-col>
     </ion-row>
