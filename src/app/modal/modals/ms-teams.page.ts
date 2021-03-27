@@ -53,7 +53,7 @@ export class MsTeamsPage implements OnInit {
     this.globals.APPS_AVAILABLE_SINGULAR.forEach((key, value) => {
       if (key[0].appName == app.appName) {
         this.specificAppData = key[0]
-        console.log(key[0])
+        console.log(this.specificAppData)
         key[0].currentlyViewing = true
         console.log(this.globals.APPS_AVAILABLE_SINGULAR)
       }
