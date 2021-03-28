@@ -18,6 +18,21 @@
     }
   }
 }
+@keyframes border-pulsate {
+  0% {
+    border-color: rgba(0, 255, 255, 1);
+  }
+  50% {
+    border-color: rgba(0, 255, 255, 0);
+  }
+  100% {
+    border-color: rgba(0, 255, 255, 1);
+  }
+}
+.col-selected {
+  border: 2px solid cyan;
+  animation: border-pulsate 2s infinite;
+}
 #container p {
   font-size: 16px;
   line-height: 22px;
