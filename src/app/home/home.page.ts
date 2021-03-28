@@ -9,6 +9,7 @@ import { GlobalConstants } from './../global-constants';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CleandataService } from "../services/cleandata.service";
 import { CurrentIpPortService } from "../services/current-ip-port.service";
+import { CurrentlyViewingService } from "../services/currently-viewing.service";
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/xml',
@@ -32,14 +33,23 @@ export class HomePage implements OnInit {
   thumbnail: any;
   currMachine: any;
   apiError: object;
-  constructor(public currentIPPORT: CurrentIpPortService, private cleanData: CleandataService, private sanitizer: DomSanitizer, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
+  constructor(public currViewCheck: CurrentlyViewingService, public currentIPPORT: CurrentIpPortService, private cleanData: CleandataService, private sanitizer: DomSanitizer, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
   isAllowedAppName(appName) {
     return this.globals.APPS_ALLOWED_APPS.includes(appName) == true
   }
   isAllowedApp(appName) {
+
+    console.log(appName)
     if (this.globals.APPS_ALLOWED_APPS.includes(appName.appName) == true) {
       this.presentModal(appName, 'true', MsTeamsPage)
     } else {
+      if (appName.appType == 'single') {
+        this.currViewCheck.checkCurrentlyViewing(appName, 'single')
+      }
+      if (appName.appType == 'multiple') {
+        this.currViewCheck.checkCurrentlyViewing(appName, 'multiple')
+      }
+
       this.doFocusWindow(appName)
     }
   }
@@ -91,5 +101,8 @@ export class HomePage implements OnInit {
     this.currentIPPORT.getValue().subscribe((value) => {
       this.apiError = value;
     });
+
+
+
   }
 }

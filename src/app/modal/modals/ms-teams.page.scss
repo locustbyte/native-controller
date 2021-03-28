@@ -156,6 +156,9 @@ ion-content {
     font-weight: bold;
     color: #969696 !important;
 }
+.sc-ion-modal-md-h .modal-wrapper {
+    background: transparent !important;
+}
 ion-item::part(native) {
     .item-inner {
         display: none !important;
