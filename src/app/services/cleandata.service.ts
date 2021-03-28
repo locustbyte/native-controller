@@ -32,7 +32,6 @@ export class CleandataService {
       this.preStripArr = [];
       this.theAppData = [];
       this.preStripArr = data;
-      this.globals.APP_RAW_DATA = data;
       for (const [i, v] of this.preStripArr.entries()) {
         var allowed = this.isAllowedAppName(v.name)
         if (v.name == "APPLICATIONFRAMEHOST") {
@@ -55,7 +54,6 @@ export class CleandataService {
             this.theAppData.push(v)
           }
         }
-        this.globals.APP_RAW_DATA = this.theAppData;
       }
       console.log(this.theAppData)
 
@@ -83,8 +81,6 @@ export class CleandataService {
           this.theAppDataRemodelled.push(appValue)
         }
       }
-      this.globals.APPS_STORED_DATA_SET = this.theAppDataRemodelled;
-      console.log(this.theAppDataRemodelled)
 
       // Reduce to make Singular and Multiple arrays
       let group = this.theAppDataRemodelled.reduce((r, a) => {

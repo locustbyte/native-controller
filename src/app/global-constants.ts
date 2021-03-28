@@ -6,9 +6,8 @@ export class GlobalConstants {
     public REST_API_SERVER = "http://" + this.REST_API_IP + ":" + this.REST_API_PORT + "/api/system";
     public APPS_AVAILABLE_SINGULAR = [];
     public APPS_AVAILABLE_MULTIPLE = [];
-    public APPS_STORED_DATA_SET = [];
     public APP_CURRENTLY_VIEWING = {};
-    public APP_RAW_DATA = [];
+    //public APP_RAW_DATA = [];
     public APPS_ALLOWED_APPS: any;
     public CURRENT_MODAL: any;
     public API_DELAY_CALL = false;

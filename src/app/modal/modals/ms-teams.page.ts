@@ -48,13 +48,13 @@ export class MsTeamsPage implements OnInit {
     if (app.appType == 'multiple') {
       this.currViewCheck.checkCurrentlyViewing(app, 'multiple')
     }
+    console.log(app)
 
-
-    if (this.getCurrentAppLocalStorage('appID' + app.appID) == null) {
-      this.setCurrentAppLocalStorage('appID' + app.appID, app)
-      this.currState = this.getCurrentAppLocalStorage('appID' + app.appID)
+    if (this.getCurrentAppLocalStorage('appID' + app.appID + '-' + app.windowsID) == null) {
+      this.setCurrentAppLocalStorage('appID' + app.appID + '-' + app.windowsID, app)
+      this.currState = this.getCurrentAppLocalStorage('appID' + app.appID + '-' + app.windowsID)
     } else {
-      this.currState = this.getCurrentAppLocalStorage('appID' + app.appID)
+      this.currState = this.getCurrentAppLocalStorage('appID' + app.appID + '-' + app.windowsID)
     }
 
     //this.setCurrentAppLocalStorage('appID' + app.appID, app)
@@ -98,10 +98,10 @@ export class MsTeamsPage implements OnInit {
   switchMic() {
     if (this.currState.mic == "false" || !this.currState.mic) {
       this.currState.mic = "true"
-      this.setCurrentAppLocalStorage('appID' + this.currState.appID, this.currState)
+      this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
     } else {
       this.currState.mic = "false"
-      this.setCurrentAppLocalStorage('appID' + this.currState.appID, this.currState)
+      this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
     }
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
     this.commandDataSend = {
@@ -116,10 +116,10 @@ export class MsTeamsPage implements OnInit {
     console.log(this.currState)
     if (this.currState.camera == "false" || !this.currState.camera) {
       this.currState.camera = "true"
-      this.setCurrentAppLocalStorage('appID' + this.currState.appID, this.currState)
+      this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
     } else {
       this.currState.camera = "false"
-      this.setCurrentAppLocalStorage('appID' + this.currState.appID, this.currState)
+      this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
     }
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
     this.commandDataSend = {
@@ -133,10 +133,10 @@ export class MsTeamsPage implements OnInit {
   switchHand() {
     if (this.currState.hand == "false" || !this.currState.hand) {
       this.currState.hand = "true"
-      this.setCurrentAppLocalStorage('appID' + this.currState.appID, this.currState)
+      this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
     } else {
       this.currState.hand = "false"
-      this.setCurrentAppLocalStorage('appID' + this.currState.appID, this.currState)
+      this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
     }
     var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
     this.commandDataSend = {
