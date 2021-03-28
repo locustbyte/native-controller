@@ -24,8 +24,8 @@ export class CleandataService {
     this.globals.APPS_AVAILABLE_MULTIPLE = [];
     var currentViewedAppID = JSON.parse(localStorage.getItem("currentlyViewedApp"))
     var currentViewedAppWindowID = JSON.parse(localStorage.getItem("currentlyViewedWindow"))
-    console.log(currentViewedAppID)
-    console.log(currentViewedAppWindowID)
+
+
     this.apiService.getAppsRunning().subscribe((data: any[]) => {
       this.globals.LOADING = false;
       this.globals.LOADINGDATA = true;
@@ -55,7 +55,7 @@ export class CleandataService {
           }
         }
       }
-      console.log(this.theAppData)
+
 
       // Remodelled
       this.theAppDataRemodelled = [];
@@ -64,8 +64,8 @@ export class CleandataService {
           if (appValue.id == currentViewedAppID) {
             for (const [appWindowKey, appWindowValue] of Object.entries(appValue.windows)) {
               if (appWindowValue["id"] == currentViewedAppWindowID) {
-                console.log('double match')
-                console.log(appValue.windows[appWindowKey])
+
+
                 appValue.windows[appWindowKey].currentView = true
               }
             }
@@ -89,7 +89,7 @@ export class CleandataService {
       }, {});
       const objectArray = Object.entries(group)
       objectArray.forEach(([key, value]) => {
-        console.log(value[0].id)
+
         if (value[0].windows.length > 1) {
           this.globals.APPS_AVAILABLE_MULTIPLE.push(value)
         }
@@ -98,8 +98,8 @@ export class CleandataService {
         }
       });
       setTimeout(() => {
-        console.log(this.globals.APPS_AVAILABLE_SINGULAR)
-        console.log(this.globals.APPS_AVAILABLE_MULTIPLE)
+
+
         this.globals.LOADINGDATA = false;
         this.globals.API_DELAY_CALL = false;
       }, 2000);

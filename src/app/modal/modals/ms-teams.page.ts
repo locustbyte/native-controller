@@ -37,7 +37,7 @@ export class MsTeamsPage implements OnInit {
     localStorage.setItem(lsName, JSON.stringify(data));
   }
   getCurrentAppLocalStorage(lsName) {
-    console.log(lsName)
+
     return JSON.parse(localStorage.getItem(lsName))
   }
   // Get window specific data
@@ -48,7 +48,7 @@ export class MsTeamsPage implements OnInit {
     if (app.appType == 'multiple') {
       this.currViewCheck.checkCurrentlyViewing(app, 'multiple')
     }
-    console.log(app)
+
 
     if (this.getCurrentAppLocalStorage('appID' + app.appID + '-' + app.windowsID) == null) {
       this.setCurrentAppLocalStorage('appID' + app.appID + '-' + app.windowsID, app)
@@ -57,15 +57,15 @@ export class MsTeamsPage implements OnInit {
       this.currState = this.getCurrentAppLocalStorage('appID' + app.appID + '-' + app.windowsID)
     }
 
-    //this.setCurrentAppLocalStorage('appID' + app.appID, app)
+
     this.currentIPPORT.setViewingNow(app);
     this.globals.APPS_AVAILABLE_SINGULAR.forEach((key, value) => {
-      // key[0].currentlyViewing = false
+
       if (key[0].appName == app.appName) {
         this.specificAppData = key[0]
-        // console.log(this.specificAppData)
+
         key[0].currentlyViewing = true
-        //console.log(this.globals.APPS_AVAILABLE_SINGULAR)
+
         this.globals.APP_CURRENTLY_VIEWING = key[0]
       }
     });
@@ -76,9 +76,6 @@ export class MsTeamsPage implements OnInit {
       }
     });
 
-    //this.cleanData.callAppsApi()
-    // this.specificAppWindowData.push(this.getCurrentAppLocalStorage('appID' + app.appID))
-    // console.log(this.specificAppWindowData)
   }
   doExecuteCommand(params) {
     this.apiService.executeCommand(params).subscribe((data: any[]) => {
@@ -113,7 +110,7 @@ export class MsTeamsPage implements OnInit {
     this.doExecuteCommand(myOpt);
   }
   switchCamera() {
-    console.log(this.currState)
+
     if (this.currState.camera == "false" || !this.currState.camera) {
       this.currState.camera = "true"
       this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
@@ -278,9 +275,7 @@ export class MsTeamsPage implements OnInit {
     this.doExecuteCommand(myOpt);
   }
   ngOnInit() {
-    // localStorage.removeItem("teamsHand")
-    // localStorage.removeItem("teamsCamera")
-    // localStorage.removeItem("teamsMic")
+
     if (!localStorage.getItem("teamsHand") == true) {
       localStorage.setItem("teamsHand", "false")
       this.hand = "false"

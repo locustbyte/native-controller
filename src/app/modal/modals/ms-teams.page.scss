@@ -101,7 +101,7 @@ ion-content {
 .custom-toolbar {
     background: #101010;
     padding: 20px;
-    padding-top: 20px !important;
+    padding-top: 14px !important;
     .toolbar-container {
         padding: 50px !important;
     }
@@ -156,9 +156,7 @@ ion-content {
     font-weight: bold;
     color: #969696 !important;
 }
-.sc-ion-modal-md-h .modal-wrapper {
-    background: transparent !important;
-}
+
 ion-item::part(native) {
     .item-inner {
         display: none !important;

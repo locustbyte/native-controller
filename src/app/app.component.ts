@@ -1,10 +1,13 @@
 import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { MenuController } from '@ionic/angular';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ApiService } from "./services/api.service";
 import { CleandataService } from "./services/cleandata.service";
 import { GlobalConstants } from './global-constants';
 import { CurrentIpPortService } from "./services/current-ip-port.service";
+import { IpconfigPage } from './modal/ipconfig/ipconfig.page';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -18,9 +21,53 @@ export class AppComponent implements OnInit {
   userNetwork: any;
   userIP: [];
   userPort: [];
+  currentModal = null;
   currMachine: any;
   apiError: object;
-  constructor(private currentIPPORT: CurrentIpPortService, private cleanData: CleandataService, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
+  constructor(private menu: MenuController, private currentIPPORT: CurrentIpPortService, public cleanData: CleandataService, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
+  openFirst() {
+    this.menu.enable(true, 'first');
+    this.menu.open('first');
+  }
+
+  openEnd() {
+    this.menu.open('end');
+  }
+
+  openCustom() {
+    this.menu.enable(true, 'custom');
+    this.menu.open('custom');
+  }
+  doReloadData() {
+    this.cleanData.cleanUpData()
+    this.menu.close();
+  }
+  doPresentIPModal() {
+    this.presentModal(null, null, IpconfigPage)
+  }
+  async presentModal(event, trusted, type) {
+    var options
+    if (type.name == 'IpconfigPage') {
+      options = {
+        component: IpconfigPage,
+        cssClass: 'my-custom-class'
+      }
+    }
+    localStorage.setItem('currentAppID', JSON.stringify(event));
+    this.globals.CURRENT_MODAL = await this.modalController.create(
+      options
+    );
+    this.globals.CURRENT_MODAL.onDidDismiss().then((dataReturned) => {
+      this.menu.close();
+      this.globals.API_DELAY_CALL = true;
+      this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u));
+      console.log(this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u)))
+      this.cleanData.cleanUpData();
+
+    });
+    this.currentModal = this.globals.CURRENT_MODAL;
+    return await this.globals.CURRENT_MODAL.present();
+  }
   isAllowedAppName(appName) {
     return this.globals.APPS_ALLOWED_APPS.includes(appName) == true
   }

@@ -7,7 +7,6 @@ export class GlobalConstants {
     public APPS_AVAILABLE_SINGULAR = [];
     public APPS_AVAILABLE_MULTIPLE = [];
     public APP_CURRENTLY_VIEWING = {};
-    //public APP_RAW_DATA = [];
     public APPS_ALLOWED_APPS: any;
     public CURRENT_MODAL: any;
     public API_DELAY_CALL = false;

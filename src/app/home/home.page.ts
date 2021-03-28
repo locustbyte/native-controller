@@ -1,5 +1,6 @@
 import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { MenuController } from '@ionic/angular';
 import { MsTeamsPage } from '../modal/modals/ms-teams.page';
 import { IpconfigPage } from './../modal/ipconfig/ipconfig.page';
 import { Observable, of, Subscription } from "rxjs";
@@ -33,13 +34,17 @@ export class HomePage implements OnInit {
   thumbnail: any;
   currMachine: any;
   apiError: object;
-  constructor(public currViewCheck: CurrentlyViewingService, public currentIPPORT: CurrentIpPortService, private cleanData: CleandataService, private sanitizer: DomSanitizer, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
+  constructor(private menu: MenuController, public currViewCheck: CurrentlyViewingService, public currentIPPORT: CurrentIpPortService, public cleanData: CleandataService, private sanitizer: DomSanitizer, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
+  openFirst() {
+    this.menu.enable(true, 'first');
+    this.menu.open('first');
+  }
   isAllowedAppName(appName) {
     return this.globals.APPS_ALLOWED_APPS.includes(appName) == true
   }
   isAllowedApp(appName) {
 
-    console.log(appName)
+
     if (this.globals.APPS_ALLOWED_APPS.includes(appName.appName) == true) {
       this.presentModal(appName, 'true', MsTeamsPage)
     } else {
@@ -82,6 +87,7 @@ export class HomePage implements OnInit {
       if (dataReturned.data.dismissed == 'leaveTeamsCall' || dataReturned.data.dismissed == 'updatedIpPort') {
         this.globals.API_DELAY_CALL = true;
         this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u));
+        console.log(this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u)))
         this.cleanData.cleanUpData();
       }
     });
