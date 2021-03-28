@@ -42,7 +42,14 @@ export class MsTeamsPage implements OnInit {
   }
   // Get window specific data
   getSpecificApp(app) {
-    this.currViewCheck.checkCurrentlyViewing(app)
+    if (app.appType == 'single') {
+      this.currViewCheck.checkCurrentlyViewing(app, 'single')
+    }
+    if (app.appType == 'multiple') {
+      this.currViewCheck.checkCurrentlyViewing(app, 'multiple')
+    }
+
+
     if (this.getCurrentAppLocalStorage('appID' + app.appID) == null) {
       this.setCurrentAppLocalStorage('appID' + app.appID, app)
       this.currState = this.getCurrentAppLocalStorage('appID' + app.appID)
@@ -69,7 +76,7 @@ export class MsTeamsPage implements OnInit {
       }
     });
 
-    this.cleanData.callAppsApi()
+    //this.cleanData.callAppsApi()
     // this.specificAppWindowData.push(this.getCurrentAppLocalStorage('appID' + app.appID))
     // console.log(this.specificAppWindowData)
   }

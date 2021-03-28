@@ -9,8 +9,8 @@
       </ion-button>
     </ion-buttons>
     <ion-title class="text-center">
-      Active Apps ({{globals.APPS_AVAILABLE_SINGULAR.length +
-      globals.APPS_AVAILABLE_MULTIPLE.length}})<br />
+      Active Apps ({{globals.APPS_AVAILABLE_SINGULAR?.length +
+      globals.APPS_AVAILABLE_MULTIPLE?.length}})<br />
       <small
         >Machine
         <span
@@ -131,8 +131,8 @@
                 class="app-title"
                 [class.vertically-align]="appSingular.value.length == 1"
               >
-                {{appSingular.value[0].name}}
-                {{appSingular.value[0].currentlyViewing}}
+                {{appSingular.value[0]?.name}}
+                {{appSingular.value[0]?.currentlyViewing}}
               </p>
               <p class="app-description" *ngIf="appSingular.value.length > 1">
                 {{appSingular.value.length}} open window(s)
@@ -158,7 +158,7 @@
                   <div
                     class="recent-item"
                     [id]="appSingularInstance.value.id"
-                    (click)="isAllowedApp({'appName': appSingularInstance.value.appName,'appID': appSingularInstance.value.id, 'windowsID': appSingularInstance.value.windows[0].id});"
+                    (click)="isAllowedApp({'appName': appSingularInstance.value.appName,'appID': appSingularInstance.value.id, 'windowsID': appSingularInstance.value.windows[0].id, appType:'single'});"
                   >
                     <img
                       src="assets/images/{{appSingular.value[0].name}}.jpg"
@@ -247,7 +247,7 @@
                 <div
                   class="recent-item"
                   [id]="appMultipleInstance.value.id"
-                  (click)="isAllowedApp({'appName': appMultiple.value[0].appName, 'appID': appMultiple.value[0].id, 'windowsID': appMultipleInstance.value.id, appCommand: ''})"
+                  (click)="isAllowedApp({'appName': appMultiple.value[0].appName, 'appID': appMultiple.value[0].id, 'windowsID': appMultipleInstance.value.id, appType:'multiple', appCommand: ''})"
                 >
                   <img src="assets/images/{{appMultiple.value[0].name}}.jpg" />
                   <div

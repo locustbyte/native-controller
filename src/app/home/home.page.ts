@@ -43,8 +43,13 @@ export class HomePage implements OnInit {
     if (this.globals.APPS_ALLOWED_APPS.includes(appName.appName) == true) {
       this.presentModal(appName, 'true', MsTeamsPage)
     } else {
+      if (appName.appType == 'single') {
+        this.currViewCheck.checkCurrentlyViewing(appName, 'single')
+      }
+      if (appName.appType == 'multiple') {
+        this.currViewCheck.checkCurrentlyViewing(appName, 'multiple')
+      }
 
-      this.currViewCheck.checkCurrentlyViewing(appName)
       this.doFocusWindow(appName)
     }
   }
