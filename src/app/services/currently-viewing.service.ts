@@ -10,9 +10,6 @@ export class CurrentlyViewingService {
   constructor(public globals: GlobalConstants) {
   }
   findNestedObj(entireObj, keyToFind, valToFind) {
-    console.log(entireObj)
-    console.log(keyToFind)
-    console.log(valToFind)
     let foundObj;
     JSON.stringify(entireObj, (_, nestedValue) => {
       if (nestedValue && nestedValue[keyToFind] === valToFind) {
@@ -40,43 +37,32 @@ export class CurrentlyViewingService {
     var myDataMultiple = this.globals.APPS_AVAILABLE_MULTIPLE
     for (var i = 0; i < myDataMultiple.length; i++) {
       if (myDataMultiple[i].length == 1) {
-        console.log(myDataMultiple[i][0].windows)
         for (var ii = 0; ii < myDataMultiple[i][0].windows.length; ii++) {
-          console.log(myDataMultiple[i][0].windows[ii])
           delete myDataMultiple[i][0].windows[ii].currentView;
-          console.log(myDataMultiple[i][0].windows[ii])
         }
-
       }
-
     }
     return myDataMultiple;
   }
   jiggleArray(type) {
-    console.log(type)
     var currentViewedAppID = JSON.parse(localStorage.getItem("currentlyViewedApp"))
     var currentViewedAppWindowID = JSON.parse(localStorage.getItem("currentlyViewedWindow"))
-
     if (type == 'single') {
       setTimeout(() => {
         var sData = this.clearSingleViewing();
         this.clearMultipleViewing();
         var theVal = this.findNestedObj(sData, 'id', currentViewedAppID);
         theVal.windows[0].currentView = true;
-      }, 2000);
+      }, 0);
     }
-
     if (type == 'multiple') {
       setTimeout(() => {
         var sData = this.clearMultipleViewing();
         this.clearSingleViewing();
-
         var theVal = this.findNestedObj(sData, 'id', currentViewedAppID);
-        console.log(JSON.stringify(currentViewedAppWindowID))
         var theWindowVal = this.findNestedObj(theVal.windows, 'id', JSON.stringify(currentViewedAppWindowID));
-        console.log(theWindowVal)
         theWindowVal.currentView = true;
-      }, 2000);
+      }, 0);
     }
   }
   public checkCurrentlyViewing(appData, type) {
@@ -88,6 +74,5 @@ export class CurrentlyViewingService {
     if (type == 'single') {
       this.jiggleArray(type);
     }
-
   }
 }
