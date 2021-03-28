@@ -4,6 +4,8 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { ApiService } from "../../services/api.service";
 import { GlobalConstants } from '../../global-constants';
 import { CurrentIpPortService } from "../../services/current-ip-port.service";
+import { CleandataService } from "../../services/cleandata.service";
+import { CurrentlyViewingService } from "../../services/currently-viewing.service";
 @Component({
   selector: 'app-ms-teams',
   templateUrl: './ms-teams.page.html',
@@ -24,7 +26,7 @@ export class MsTeamsPage implements OnInit {
   specificAppWindowData = [];
   currState: any;
   @Input() app: number;
-  constructor(public currentIPPORT: CurrentIpPortService, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
+  constructor(public currViewCheck: CurrentlyViewingService, private cleanData: CleandataService, public currentIPPORT: CurrentIpPortService, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
   dismiss() {
     this.modalController.dismiss({
       'dismissed': true
@@ -40,7 +42,7 @@ export class MsTeamsPage implements OnInit {
   }
   // Get window specific data
   getSpecificApp(app) {
-
+    this.currViewCheck.checkCurrentlyViewing(app)
     if (this.getCurrentAppLocalStorage('appID' + app.appID) == null) {
       this.setCurrentAppLocalStorage('appID' + app.appID, app)
       this.currState = this.getCurrentAppLocalStorage('appID' + app.appID)
@@ -51,18 +53,23 @@ export class MsTeamsPage implements OnInit {
     //this.setCurrentAppLocalStorage('appID' + app.appID, app)
     this.currentIPPORT.setViewingNow(app);
     this.globals.APPS_AVAILABLE_SINGULAR.forEach((key, value) => {
+      // key[0].currentlyViewing = false
       if (key[0].appName == app.appName) {
         this.specificAppData = key[0]
-        console.log(this.specificAppData)
+        // console.log(this.specificAppData)
         key[0].currentlyViewing = true
-        console.log(this.globals.APPS_AVAILABLE_SINGULAR)
+        //console.log(this.globals.APPS_AVAILABLE_SINGULAR)
+        this.globals.APP_CURRENTLY_VIEWING = key[0]
       }
     });
     this.globals.APPS_AVAILABLE_MULTIPLE.forEach((key, value) => {
       if (key[0].appName == app.appName) {
-        this.specificAppData = key[0]
+        this.specificAppData = key[0];
+        this.globals.APP_CURRENTLY_VIEWING = key[0]
       }
     });
+
+    this.cleanData.callAppsApi()
     // this.specificAppWindowData.push(this.getCurrentAppLocalStorage('appID' + app.appID))
     // console.log(this.specificAppWindowData)
   }

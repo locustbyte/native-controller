@@ -8,8 +8,8 @@
         <ion-icon style="color: white" name="settings-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title class="text-center"
-      >Active Apps ({{globals.APPS_AVAILABLE_SINGULAR.length +
+    <ion-title class="text-center">
+      Active Apps ({{globals.APPS_AVAILABLE_SINGULAR.length +
       globals.APPS_AVAILABLE_MULTIPLE.length}})<br />
       <small
         >Machine
@@ -132,6 +132,7 @@
                 [class.vertically-align]="appSingular.value.length == 1"
               >
                 {{appSingular.value[0].name}}
+                {{appSingular.value[0].currentlyViewing}}
               </p>
               <p class="app-description" *ngIf="appSingular.value.length > 1">
                 {{appSingular.value.length}} open window(s)
@@ -179,8 +180,8 @@
                           color: #929292;
                         "
                       >
-                        {{appSingular.value[0].currentlyViewing }}
-                        <span *ngIf="appSingular.value[0]?.currentlyViewing"
+                        <span
+                          *ngIf="appSingularInstance.value.windows[0]?.currentView == true"
                           >Viewing now</span
                         >
                       </p>
@@ -266,7 +267,10 @@
                         color: #929292;
                       "
                     >
-                      Viewing now
+                      <span
+                        *ngIf="appMultipleInstance.value?.currentView == true"
+                        >Viewing now</span
+                      >
                     </p>
                     <p
                       style="

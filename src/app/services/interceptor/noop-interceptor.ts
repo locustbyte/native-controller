@@ -50,7 +50,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
                 };
                 this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.globals.REST_API_IP = u.currIP));
                 this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.globals.REST_API_PORT = u.currPORT));
-                console.log(error)
+
 
                 if (new String("http://" + this.globals.REST_API_IP + "/api/system/apps/running/").valueOf() == new String("http://" + this.globals.REST_API_IP + "/api/system/apps/running/").valueOf()) {
                     if (error.statusText == 'Unknown Error') {
@@ -72,7 +72,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
                         this.globals.LOADING = false;
                     }
 
-                    console.log(this.globals.API_ERROR)
+
 
 
                 }
