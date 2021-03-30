@@ -8,7 +8,18 @@
 
     <ion-title class="text-center">
       You have {{globals.APPS_AVAILABLE_SINGULAR?.length +
-      globals.APPS_AVAILABLE_MULTIPLE?.length}} apps open<br />
+      globals.APPS_AVAILABLE_MULTIPLE?.length}}
+      <span
+        *ngIf="globals.APPS_AVAILABLE_SINGULAR?.length +
+      globals.APPS_AVAILABLE_MULTIPLE?.length == 1"
+        >app</span
+      >
+      <span
+        *ngIf="globals.APPS_AVAILABLE_SINGULAR?.length +
+      globals.APPS_AVAILABLE_MULTIPLE?.length > 1"
+        >apps</span
+      >
+      open<br />
       <small style="color: grey"
         >Connected to
         <span
