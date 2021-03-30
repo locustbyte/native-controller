@@ -143,9 +143,9 @@
           src="assets/images/microsoft-teams/camera-off.png"
           (click)="switchCamera();"
         />
-        <p *ngIf="currState.camera == 'true'">Hide Camera</p>
+        <p *ngIf="currState.camera == 'true'">Show Camera</p>
         <p *ngIf="currState.camera == 'false'  || !currState.camera">
-          Show Camera
+          Hide Camera
         </p>
       </ion-col>
       <ion-col size="2"></ion-col>
