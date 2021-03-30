@@ -12,6 +12,7 @@ export class GlobalConstants {
     public API_DELAY_CALL = false;
     public API_CURRENT_PATH = "/apps/running/";
     public API_ERROR = [];
+    public API_MODE = "LoadData";
     public API_ERROR_TYPE = null;
     public LOADING = true;
     public LOADINGDATA = false;

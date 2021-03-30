@@ -88,7 +88,7 @@ export class HomePage implements OnInit {
         this.globals.API_DELAY_CALL = true;
         this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u));
         console.log(this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u)))
-        this.cleanData.cleanUpData();
+        this.cleanData.cleanUpData('LoadData');
       }
     });
     this.currentModal = this.globals.CURRENT_MODAL;
@@ -99,10 +99,11 @@ export class HomePage implements OnInit {
     })
   }
   getRunningProcesses() {
-    this.cleanData.cleanUpData()
+    this.cleanData.cleanUpData('LoadData')
   }
   ngOnInit() {
     this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u));
+    console.log(this.currMachine)
     this.currentIPPORT.subscriptionApiError = this.currentIPPORT.checkIfApiError(this.globals.API_ERROR).subscribe(u => (this.apiError = u));
     this.currentIPPORT.getValue().subscribe((value) => {
       this.apiError = value;

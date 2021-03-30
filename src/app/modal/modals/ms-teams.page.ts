@@ -24,13 +24,22 @@ export class MsTeamsPage implements OnInit {
   commandDataSend = {};
   specificAppData = {};
   specificAppWindowData = [];
+  currStateVar: any;
   currState: any;
+  dismissedState: any;
   @Input() app: number;
   constructor(public currViewCheck: CurrentlyViewingService, private cleanData: CleandataService, public currentIPPORT: CurrentIpPortService, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
   dismiss() {
-    this.modalController.dismiss({
-      'dismissed': true
-    })
+    console.log(this.currState)
+    if (this.currState.slideshow == 'true') {
+      this.ppSlideshowStop();
+    } else {
+      this.modalController.dismiss({
+        'dismissed': true,
+        'state': this.dismissedState
+      })
+    }
+
   }
 
   setCurrentAppLocalStorage(lsName, data) {
@@ -42,6 +51,7 @@ export class MsTeamsPage implements OnInit {
   }
   // Get window specific data
   getSpecificApp(app) {
+    console.log(app)
     if (app.appType == 'single') {
       this.currViewCheck.checkCurrentlyViewing(app, 'single')
     }
@@ -63,6 +73,7 @@ export class MsTeamsPage implements OnInit {
 
       if (key[0].appName == app.appName) {
         this.specificAppData = key[0]
+        console.log(this.specificAppData)
 
         key[0].currentlyViewing = true
 
@@ -72,6 +83,7 @@ export class MsTeamsPage implements OnInit {
     this.globals.APPS_AVAILABLE_MULTIPLE.forEach((key, value) => {
       if (key[0].appName == app.appName) {
         this.specificAppData = key[0];
+        console.log(this.specificAppData)
         this.globals.APP_CURRENTLY_VIEWING = key[0]
       }
     });
@@ -83,14 +95,12 @@ export class MsTeamsPage implements OnInit {
   }
   //Teams
   leaveMeeting() {
-    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
     this.commandDataSend = {
-      appId: this.commandData.appId,
-      windowId: this.commandData.windowId,
-      command: "Leave"
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "Leave"
     }
-    myOpt.appCommand = "Leave"
-    this.doExecuteCommand(myOpt);
+    this.doExecuteCommand(this.commandDataSend);
   }
   switchMic() {
     if (this.currState.mic == "false" || !this.currState.mic) {
@@ -100,14 +110,12 @@ export class MsTeamsPage implements OnInit {
       this.currState.mic = "false"
       this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
     }
-    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
     this.commandDataSend = {
-      appId: this.commandData.appId,
-      windowId: this.commandData.windowId,
-      command: "Mute Unmute mic"
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "Mute Unmute mic"
     }
-    myOpt.appCommand = "Mute Unmute mic"
-    this.doExecuteCommand(myOpt);
+    this.doExecuteCommand(this.commandDataSend);
   }
   switchCamera() {
 
@@ -118,14 +126,12 @@ export class MsTeamsPage implements OnInit {
       this.currState.camera = "false"
       this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
     }
-    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
     this.commandDataSend = {
-      appId: this.commandData.appId,
-      windowId: this.commandData.windowId,
-      command: "Camera"
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "Camera"
     }
-    myOpt.appCommand = "Camera"
-    this.doExecuteCommand(myOpt);
+    this.doExecuteCommand(this.commandDataSend);
   }
   switchHand() {
     if (this.currState.hand == "false" || !this.currState.hand) {
@@ -135,86 +141,127 @@ export class MsTeamsPage implements OnInit {
       this.currState.hand = "false"
       this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
     }
-    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
     this.commandDataSend = {
-      appId: this.commandData.appId,
-      windowId: this.commandData.windowId,
-      command: "Raise"
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "Raise"
     }
-    myOpt.appCommand = "Raise"
-    this.doExecuteCommand(myOpt);
+    this.doExecuteCommand(this.commandDataSend);
   }
   //Powerpoint
   ppPlayFromStart() {
-    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    this.commandDataSend = {
-      appId: this.commandData.appId,
-      windowId: this.commandData.windowId,
-      command: "PlayFromStart"
+    this.globals.API_DELAY_CALL = true
+    this.cleanData.cleanUpData('PPSlideShow')
+    if (this.currState.slideshow == "false" || !this.currState.slideshow) {
+      this.currState.slideshow = "true"
+      this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
+    } else {
+      this.currState.slideshow = "false"
+      this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
     }
-    myOpt.appCommand = "PlayFromStart"
-    this.doExecuteCommand(myOpt);
+    this.commandDataSend = {
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "PlayFromStart"
+    }
+    this.doExecuteCommand(this.commandDataSend);
+  }
+  ppSlideNext() {
+    this.commandDataSend = {
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "Slide-Next"
+    }
+    this.doExecuteCommand(this.commandDataSend);
+  }
+  ppSlidePrev() {
+    var myOpt = this.currState;
+    this.commandDataSend = {
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "Slide-Prev"
+    }
+    this.doExecuteCommand(this.commandDataSend);
+  }
+  ppSlideshowStop() {
+    this.globals.API_DELAY_CALL = true
+    this.cleanData.cleanUpData('PPSlideShowEnd')
+    this.currState.slideshow = "false"
+    this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
+
+
+    this.commandDataSend = {
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "Presentation-Ends"
+    }
+    this.doExecuteCommand(this.commandDataSend);
   }
   ppPlayFromCurrentSlide() {
-    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    this.commandDataSend = {
-      appId: this.commandData.appId,
-      windowId: this.commandData.windowId,
-      command: "PlayFromCurrentSlide"
+    this.globals.API_DELAY_CALL = true
+    this.cleanData.cleanUpData('PPSlideShow')
+    if (this.currState.slideshow == "false" || !this.currState.slideshow) {
+      this.currState.slideshow = "true"
+      this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
+    } else {
+      this.currState.slideshow = "false"
+      this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
     }
-    myOpt.appCommand = "PlayFromCurrentSlide"
-    this.doExecuteCommand(myOpt);
+
+    this.commandDataSend = {
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "PlayFromCurrentSlide"
+    }
+    this.doExecuteCommand(this.commandDataSend);
   }
   ppPrint() {
-    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
     this.commandDataSend = {
-      appId: this.commandData.appId,
-      windowId: this.commandData.windowId,
-      command: "Print"
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "Print"
     }
-    myOpt.appCommand = "Print"
-    this.doExecuteCommand(myOpt);
+    this.doExecuteCommand(this.commandDataSend);
   }
   ppSave() {
-    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
     this.commandDataSend = {
-      appId: this.commandData.appId,
-      windowId: this.commandData.windowId,
-      command: "Save"
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "Save"
     }
-    myOpt.appCommand = "Save"
-    this.doExecuteCommand(myOpt);
+    this.doExecuteCommand(this.commandDataSend);
   }
   ppNewSlide() {
-    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
     this.commandDataSend = {
-      appId: this.commandData.appId,
-      windowId: this.commandData.windowId,
-      command: "NewSlide"
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "NewSlide"
     }
-    myOpt.appCommand = "NewSlide"
-    this.doExecuteCommand(myOpt);
+    this.doExecuteCommand(this.commandDataSend);
   }
   ppDuplicateSlide() {
-    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
     this.commandDataSend = {
-      appId: this.commandData.appId,
-      windowId: this.commandData.windowId,
-      command: "DuplicateSlide"
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "DuplicateSlide"
     }
-    myOpt.appCommand = "DuplicateSlide"
-    this.doExecuteCommand(myOpt);
+    this.doExecuteCommand(this.commandDataSend);
   }
   //Netflix
   netflixRewind() {
-    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
-    this.commandDataSend = {
-      appId: this.commandData.appId,
-      windowId: this.commandData.windowId,
-      command: "Rewind10"
+    if (this.currState.hand == "false" || !this.currState.hand) {
+      this.currState.hand = "true"
+      this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
+    } else {
+      this.currState.hand = "false"
+      this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
     }
-    myOpt.appCommand = "Rewind10"
-    this.doExecuteCommand(myOpt);
+    this.commandDataSend = {
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "Rewind10"
+    }
+    this.doExecuteCommand(this.commandDataSend);
   }
   netflixPause() {
     if (localStorage.getItem("netflixPlay") == "false") {
@@ -224,55 +271,45 @@ export class MsTeamsPage implements OnInit {
       localStorage.setItem("netflixPlay", "false")
       this.netflixPlay = "false"
     };
-    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
     this.commandDataSend = {
-      appId: this.commandData.appId,
-      windowId: this.commandData.windowId,
-      command: "PlayPause"
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "PlayPause"
     }
-    myOpt.appCommand = "PlayPause"
-    this.doExecuteCommand(myOpt);
+    this.doExecuteCommand(this.commandDataSend);
   }
   netflixStop() {
-    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
     this.commandDataSend = {
-      appId: this.commandData.appId,
-      windowId: this.commandData.windowId,
-      command: "Stop"
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "Stop"
     }
-    myOpt.appCommand = "Stop"
-    this.doExecuteCommand(myOpt);
+    this.doExecuteCommand(this.commandDataSend);
   }
   // Spotify
   spotifyShuffle() {
-    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
     this.commandDataSend = {
-      appId: this.commandData.appId,
-      windowId: this.commandData.windowId,
-      command: "Shuffle"
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "Shuffle"
     }
-    myOpt.appCommand = "Shuffle"
-    this.doExecuteCommand(myOpt);
+    this.doExecuteCommand(this.commandDataSend);
   }
   spotifyPlay() {
-    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
     this.commandDataSend = {
-      appId: this.commandData.appId,
-      windowId: this.commandData.windowId,
-      command: "Play"
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "Play"
     }
-    myOpt.appCommand = "Play"
-    this.doExecuteCommand(myOpt);
+    this.doExecuteCommand(this.commandDataSend);
   }
   spotifyStop() {
-    var myOpt = JSON.parse(localStorage.getItem('currentAppID'));
     this.commandDataSend = {
-      appId: this.commandData.appId,
-      windowId: this.commandData.windowId,
-      command: "Stop"
+      appID: this.currState.appID,
+      windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
+      appCommand: "Stop"
     }
-    myOpt.appCommand = "Stop"
-    this.doExecuteCommand(myOpt);
+    this.doExecuteCommand(this.commandDataSend);
   }
   ngOnInit() {
 

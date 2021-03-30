@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
     this.menu.open('custom');
   }
   doReloadData() {
-    this.cleanData.cleanUpData()
+    this.cleanData.cleanUpData('LoadData')
     this.menu.close();
   }
   doPresentIPModal() {
@@ -62,7 +62,8 @@ export class AppComponent implements OnInit {
       this.globals.API_DELAY_CALL = true;
       this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u));
       console.log(this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u)))
-      this.cleanData.cleanUpData();
+      console.log(this.currMachine)
+      this.cleanData.cleanUpData('LoadData');
 
     });
     this.currentModal = this.globals.CURRENT_MODAL;
@@ -72,7 +73,7 @@ export class AppComponent implements OnInit {
     return this.globals.APPS_ALLOWED_APPS.includes(appName) == true
   }
   getRunningProcesses() {
-    this.cleanData.cleanUpData()
+    this.cleanData.cleanUpData('LoadData')
   }
   grabUserIpAddress() {
     this.httpClient.get("assets/ipAddress.json").subscribe(data => {

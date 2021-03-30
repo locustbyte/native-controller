@@ -169,7 +169,7 @@
                   <div
                     class="recent-item"
                     [id]="appSingularInstance.value.id"
-                    (click)="isAllowedApp({'appName': appSingularInstance.value.appName,'appID': appSingularInstance.value.id, 'windowsID': appSingularInstance.value.windows[0].id, appType:'single'});"
+                    (click)="isAllowedApp({'appName': appSingularInstance.value.appName,'appID': appSingularInstance.value.id, 'windowTitle': appSingularInstance.value.windows[0].title, 'windowsID': appSingularInstance.value.windows[0].id, appType:'single'});"
                   >
                     <img
                       src="assets/images/{{appSingular.value[0].name}}.jpg"
@@ -236,7 +236,7 @@
                 class="app-description"
                 *ngIf="appMultiple.value[0].windows.length > 1"
               >
-                {{appMultiple.value[0].windows.length }} open window(s)
+                {{appMultiple.value[0].windows.length }} open windows
               </p>
             </ion-col>
           </ion-row>
@@ -261,7 +261,7 @@
                 <div
                   class="recent-item"
                   [id]="appMultipleInstance.value.id"
-                  (click)="isAllowedApp({'appName': appMultiple.value[0].appName, 'appID': appMultiple.value[0].id, 'windowsID': appMultipleInstance.value.id, appType:'multiple', appCommand: ''})"
+                  (click)="isAllowedApp({'appName': appMultiple.value[0].appName, 'appID': appMultiple.value[0].id, 'windowTitle': appMultipleInstance.value.title, 'windowsID': appMultipleInstance.value.id, appType:'multiple', appCommand: ''})"
                 >
                   <img src="assets/images/{{appMultiple.value[0].name}}.jpg" />
                   <div

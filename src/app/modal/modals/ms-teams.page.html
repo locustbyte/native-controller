@@ -38,50 +38,74 @@
 </ion-header>
 <ion-content class="no-scroll">
   <div *ngIf="specificAppData.appName == 'PowerPoint'">
-    <ion-row class="text-center m-t-20">
+    <ion-row class="text-center m-t-20 p-l-50 p-r-50">
       <ion-col class="touch-icon">
-        <div class="modal-title">{{specificAppData.title}}</div>
+        <div class="modal-title">{{currState.windowTitle}}</div>
       </ion-col>
     </ion-row>
-    <ion-row class="text-center pp-boxes m-t-20">
-      <ion-col offset-4>
-        <div (click)="ppPlayFromStart();"><p>Play from start</p></div>
-      </ion-col>
-      <ion-col offset-4>
-        <div (click)="ppPlayFromCurrentSlide();">
-          <p>Play from current slide</p>
-        </div>
-      </ion-col>
-    </ion-row>
-    <ion-row class="text-center pp-boxes">
-      <ion-col offset-4>
-        <div (click)="ppSave();"><p>Save</p></div>
-      </ion-col>
-      <ion-col offset-4>
-        <div (click)="ppPrint();"><p>Print</p></div>
-      </ion-col>
-    </ion-row>
-    <ion-row class="text-center pp-boxes">
-      <ion-col offset-4>
-        <div (click)="ppNewSlide();"><p>New slide</p></div>
-      </ion-col>
-      <ion-col offset-4>
-        <div (click)="ppDuplicateSlide();"><p>Duplicate slide</p></div>
+    <ion-row *ngIf="currState.slideshow == 'true'">
+      <ion-col>
+        <ion-row class="m-l-10 m-r-10 m-b-10 p-t-10 p-b-10 border-575757">
+          <ion-col size="12" class="text-center" (click)="ppSlideshowStop();">
+            <img src="assets/images/pp_stop.png" />
+          </ion-col>
+        </ion-row>
+        <ion-row class="m-l-10 m-r-10 m-b-10 p-t-10 p-b-10 border-575757">
+          <ion-col size="12" class="text-center" (click)="ppSlideNext();">
+            <img src="assets/images/pp_next.png" />
+          </ion-col>
+        </ion-row>
+        <ion-row class="m-l-10 m-r-10 m-b-10 p-t-10 p-b-10 border-575757">
+          <ion-col size="12" class="text-center" (click)="ppSlidePrev();">
+            <img src="assets/images/pp_prev.png" />
+          </ion-col>
+        </ion-row>
       </ion-col>
     </ion-row>
-    <ion-row class="text-center pp-boxes">
-      <ion-col offset-4>
-        <div class="blank"><img src="assets/images/add-icon.png" /></div
-      ></ion-col>
+    <ion-row *ngIf="currState.slideshow == 'false' || !currState.slideshow">
+      <ion-col>
+        <ion-row class="text-center pp-boxes m-t-20">
+          <ion-col offset-4>
+            <div (click)="ppPlayFromStart();"><p>Play from start</p></div>
+          </ion-col>
+          <ion-col offset-4>
+            <div (click)="ppPlayFromCurrentSlide();">
+              <p>Play from current slide</p>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row class="text-center pp-boxes">
+          <ion-col offset-4>
+            <div (click)="ppSave();"><p>Save</p></div>
+          </ion-col>
+          <ion-col offset-4>
+            <div (click)="ppPrint();"><p>Print</p></div>
+          </ion-col>
+        </ion-row>
+        <ion-row class="text-center pp-boxes">
+          <ion-col offset-4>
+            <div (click)="ppNewSlide();"><p>New slide</p></div>
+          </ion-col>
+          <ion-col offset-4>
+            <div (click)="ppDuplicateSlide();"><p>Duplicate slide</p></div>
+          </ion-col>
+        </ion-row>
+        <ion-row class="text-center pp-boxes">
+          <ion-col offset-4>
+            <div><p>New Comment</p></div>
+          </ion-col>
+          <ion-col offset-4
+            ><div class="blank m-t-20">
+              <img src="assets/images/add-icon.png" /></div
+          ></ion-col>
+        </ion-row>
+      </ion-col>
     </ion-row>
   </div>
   <div *ngIf="specificAppData.appName == 'Microsoft Teams'">
-    <ion-row class="m-t-10">
-      <ion-col size="12" class="text-center">
-        <p class="m-b-20 p-l-0 p-r-0 p-t-0 p-b-0 text-bold">
-          {{specificAppData.title}}
-        </p>
-        <!-- <p>02:41</p> -->
+    <ion-row class="text-center m-t-20 p-l-50 p-r-50">
+      <ion-col class="touch-icon">
+        <div class="modal-title">{{currState.windowTitle}}</div>
       </ion-col>
     </ion-row>
     <ion-row class="text-center m-t-30">
@@ -143,9 +167,9 @@
           src="assets/images/microsoft-teams/camera-off.png"
           (click)="switchCamera();"
         />
-        <p *ngIf="currState.camera == 'true'">Show Camera</p>
+        <p *ngIf="currState.camera == 'true'">Hide Camera</p>
         <p *ngIf="currState.camera == 'false'  || !currState.camera">
-          Hide Camera
+          Show Camera
         </p>
       </ion-col>
       <ion-col size="2"></ion-col>
@@ -167,7 +191,10 @@
       <ion-col size="1"></ion-col>
     </ion-row>
   </div>
-  <div *ngIf="specificAppData.appName == 'Netflix'" class="modal-control-icons">
+  <div
+    *ngIf="specificAppData.appName == 'Netflix'"
+    class="modal-control-icons m-t-75"
+  >
     <ion-row class="text-center">
       <ion-col>
         <div class="netflix-poster">
@@ -175,7 +202,7 @@
         </div>
       </ion-col>
     </ion-row>
-    <ion-row class="text-center m-t-30">
+    <ion-row class="text-center m-t-50">
       <ion-col size="4" class="text-right">
         <img
           class="m-t-8"
@@ -192,7 +219,7 @@
         <img
           *ngIf="netflixPlay == 'false'"
           (click)="netflixPause();"
-          src="assets/images/netflix-pause.png"
+          src="assets/images/netflix-play.png"
         />
       </ion-col>
       <ion-col size="4" class="text-left">
@@ -201,6 +228,13 @@
           (click)="netflixStop();"
           src="assets/images/netflix-stop.png"
         />
+      </ion-col>
+    </ion-row>
+    <ion-row class="m-t-30">
+      <ion-col>
+        <ion-range value="20">
+          <ion-label slot="end">00:00</ion-label>
+        </ion-range>
       </ion-col>
     </ion-row>
   </div>

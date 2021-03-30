@@ -12,6 +12,7 @@ import { CurrentIpPortService } from "../services/current-ip-port.service";
 })
 export class ApiService {
   theApiServer: string;
+  postBody: any;
   headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
   constructor(public currentIPPORT: CurrentIpPortService, private httpClient: HttpClient, public globals: GlobalConstants) {
     if (localStorage.getItem("currentIpAddress")) {
@@ -54,9 +55,15 @@ export class ApiService {
   }
   // Execute application command 
   public executeCommand(data: any): Observable<any> {
+    this.postBody = data;
+    console.log(this.postBody)
     this.globals.API_CURRENT_PATH = "/application/" + data.appID + "/shortcuts?windowId=" + data.windowsID + "&commandName=" + data.appCommand
     var theURL = this.globals.REST_API_SERVER + this.globals.API_CURRENT_PATH
-    var body = {}
-    return this.httpClient.post<any>(theURL, body)
+    this.postBody = {
+      processId: data.appID,
+      windowId: data.windowsID,
+      commandName: data.appCommand
+    }
+    return this.httpClient.post<any>(theURL, this.postBody)
   }
 }

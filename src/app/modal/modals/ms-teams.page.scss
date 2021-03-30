@@ -98,6 +98,14 @@ ion-content {
 .touch-icon {
     width: 100px;
 }
+.range-bar-active {
+    bottom: 0px;
+    width: auto;
+    background: white;
+}
+ion-range::part(bar-active) {
+    --bar-background: grey !important;
+}
 .custom-toolbar {
     // background: #101010;
     padding: 20px;
@@ -106,8 +114,16 @@ ion-content {
         padding: 50px !important;
     }
 }
+.text-center {
+    text-align: center;
+}
+.border-575757 {
+    border: 1px solid #575757;
+    border-radius: 5px;
+}
 .modal-title {
-    font-size: 24px;
+    font-size: 18px;
+    font-weight: bold;
     margin: 20px 0px 20px 0px;
 }
 .modal-sub-title {
