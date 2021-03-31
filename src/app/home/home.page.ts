@@ -43,8 +43,6 @@ export class HomePage implements OnInit {
     return this.globals.APPS_ALLOWED_APPS.includes(appName) == true
   }
   isAllowedApp(appName) {
-
-
     if (this.globals.APPS_ALLOWED_APPS.includes(appName.appName) == true) {
       this.presentModal(appName, 'true', MsTeamsPage)
     } else {
@@ -54,7 +52,6 @@ export class HomePage implements OnInit {
       if (appName.appType == 'multiple') {
         this.currViewCheck.checkCurrentlyViewing(appName, 'multiple')
       }
-
       this.doFocusWindow(appName)
     }
   }
@@ -89,18 +86,13 @@ export class HomePage implements OnInit {
       options
     );
     this.globals.CURRENT_MODAL.onDidDismiss().then((dataReturned) => {
-
       this.menu.close();
       //this.globals.API_DELAY_CALL = true;
       this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u));
-      console.log(this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u)))
-      console.log(this.currMachine)
       //this.cleanData.cleanUpData('LoadData');
-
       if (dataReturned.data.dismissed == 'leaveTeamsCall' || dataReturned.data.dismissed == 'updatedIpPort') {
         this.globals.API_DELAY_CALL = true;
         this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u));
-        console.log(this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u)))
         this.cleanData.cleanUpData('LoadData');
       }
     });
@@ -116,14 +108,9 @@ export class HomePage implements OnInit {
   }
   ngOnInit() {
     this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u));
-    console.log(this.currMachine)
     this.currentIPPORT.subscriptionApiError = this.currentIPPORT.checkIfApiError(this.globals.API_ERROR).subscribe(u => (this.apiError = u));
     this.currentIPPORT.getValue().subscribe((value) => {
       this.apiError = value;
     });
-
-
-
-
   }
 }

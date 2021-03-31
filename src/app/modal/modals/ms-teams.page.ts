@@ -30,7 +30,6 @@ export class MsTeamsPage implements OnInit {
   @Input() app: number;
   constructor(public currViewCheck: CurrentlyViewingService, private cleanData: CleandataService, public currentIPPORT: CurrentIpPortService, public modalController: ModalController, private httpClient: HttpClient, private apiService: ApiService, public globals: GlobalConstants) { }
   dismiss() {
-    console.log(this.currState)
     if (this.currState.slideshow == 'true') {
       this.ppSlideshowStop();
     } else {
@@ -39,55 +38,41 @@ export class MsTeamsPage implements OnInit {
         'state': this.dismissedState
       })
     }
-
   }
-
   setCurrentAppLocalStorage(lsName, data) {
     localStorage.setItem(lsName, JSON.stringify(data));
   }
   getCurrentAppLocalStorage(lsName) {
-
     return JSON.parse(localStorage.getItem(lsName))
   }
   // Get window specific data
   getSpecificApp(app) {
-    console.log(app)
     if (app.appType == 'single') {
       this.currViewCheck.checkCurrentlyViewing(app, 'single')
     }
     if (app.appType == 'multiple') {
       this.currViewCheck.checkCurrentlyViewing(app, 'multiple')
     }
-
-
     if (this.getCurrentAppLocalStorage('appID' + app.appID + '-' + app.windowsID) == null) {
       this.setCurrentAppLocalStorage('appID' + app.appID + '-' + app.windowsID, app)
       this.currState = this.getCurrentAppLocalStorage('appID' + app.appID + '-' + app.windowsID)
     } else {
       this.currState = this.getCurrentAppLocalStorage('appID' + app.appID + '-' + app.windowsID)
     }
-
-
     this.currentIPPORT.setViewingNow(app);
     this.globals.APPS_AVAILABLE_SINGULAR.forEach((key, value) => {
-
       if (key[0].appName == app.appName) {
         this.specificAppData = key[0]
-        console.log(this.specificAppData)
-
         key[0].currentlyViewing = true
-
         this.globals.APP_CURRENTLY_VIEWING = key[0]
       }
     });
     this.globals.APPS_AVAILABLE_MULTIPLE.forEach((key, value) => {
       if (key[0].appName == app.appName) {
         this.specificAppData = key[0];
-        console.log(this.specificAppData)
         this.globals.APP_CURRENTLY_VIEWING = key[0]
       }
     });
-
   }
   doExecuteCommand(params) {
     this.apiService.executeCommand(params).subscribe((data: any[]) => {
@@ -118,7 +103,6 @@ export class MsTeamsPage implements OnInit {
     this.doExecuteCommand(this.commandDataSend);
   }
   switchCamera() {
-
     if (this.currState.camera == "false" || !this.currState.camera) {
       this.currState.camera = "true"
       this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
@@ -188,8 +172,6 @@ export class MsTeamsPage implements OnInit {
     this.cleanData.cleanUpData('PPSlideShowEnd')
     this.currState.slideshow = "false"
     this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
-
-
     this.commandDataSend = {
       appID: this.currState.appID,
       windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
@@ -207,7 +189,6 @@ export class MsTeamsPage implements OnInit {
       this.currState.slideshow = "false"
       this.setCurrentAppLocalStorage('appID' + this.currState.appID + '-' + this.currState.windowsID, this.currState)
     }
-
     this.commandDataSend = {
       appID: this.currState.appID,
       windowsID: JSON.parse(localStorage.getItem('currentlyViewedWindow')),
@@ -312,7 +293,6 @@ export class MsTeamsPage implements OnInit {
     this.doExecuteCommand(this.commandDataSend);
   }
   ngOnInit() {
-
     if (!localStorage.getItem("teamsHand") == true) {
       localStorage.setItem("teamsHand", "false")
       this.hand = "false"
