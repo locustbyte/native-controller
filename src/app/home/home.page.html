@@ -1,3 +1,28 @@
+<ion-menu side="start" type="push" content-id="main-content">
+  <ion-header class="menu-custom-header">
+    <ion-toolbar translucent style="padding: 20px">
+      <ion-buttons slot="end">
+        <ion-menu-button style="color: white; font-size: 24px">
+          <ion-icon (click)="dismiss();" name="close-outline"></ion-icon>
+        </ion-menu-button>
+      </ion-buttons>
+      <ion-title>HP Sidecar</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content style="background: #0e0e0e">
+    <ion-list style="padding: 20px; background: transparent">
+      <ion-item (click)="doPresentIPModal()">
+        <ion-icon name="wifi-outline" slot="start"></ion-icon>
+        <ion-label>IP / PORT Settings</ion-label>
+      </ion-item>
+      <ion-item (click)="doReloadData()">
+        <ion-icon name="refresh-outline" slot="start"></ion-icon>
+        <ion-label>Reload Apps</ion-label>
+      </ion-item>
+    </ion-list>
+    <div style="padding: 20px">Sidecar v1.0.3</div>
+  </ion-content>
+</ion-menu>
 <ion-header [translucent]="true">
   <ion-toolbar class="custom-toolbar">
     <ion-buttons slot="start">
@@ -19,6 +44,11 @@
       globals.APPS_AVAILABLE_MULTIPLE?.length > 1"
         >apps</span
       >
+      <span
+        *ngIf="globals.APPS_AVAILABLE_SINGULAR?.length +
+      globals.APPS_AVAILABLE_MULTIPLE?.length == 0"
+        >apps
+      </span>
       open<br />
       <small style="color: grey"
         >Connected to
@@ -38,7 +68,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" id="main-content">
   <div class="loader-screen" *ngIf="this.globals.LOADING == true">
     <h1>Locating Server...</h1>
     <img src="assets/images/svg-css-loaders/ball-triangle.svg" />

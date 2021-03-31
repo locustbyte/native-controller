@@ -61,6 +61,11 @@ export class HomePage implements OnInit {
   doPresentIPModal() {
     this.presentModal(null, null, IpconfigPage)
   }
+  dismiss() {
+    this.modalController.dismiss({
+      'dismissed': 'updatedIpPort'
+    })
+  }
   async presentModal(event, trusted, type) {
     var options
     if (type.name == 'MsTeamsPage') {
@@ -84,6 +89,14 @@ export class HomePage implements OnInit {
       options
     );
     this.globals.CURRENT_MODAL.onDidDismiss().then((dataReturned) => {
+
+      this.menu.close();
+      //this.globals.API_DELAY_CALL = true;
+      this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u));
+      console.log(this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u)))
+      console.log(this.currMachine)
+      //this.cleanData.cleanUpData('LoadData');
+
       if (dataReturned.data.dismissed == 'leaveTeamsCall' || dataReturned.data.dismissed == 'updatedIpPort') {
         this.globals.API_DELAY_CALL = true;
         this.currentIPPORT.subscription = this.currentIPPORT.getAsyncData().subscribe(u => (this.currMachine = u));
@@ -108,6 +121,7 @@ export class HomePage implements OnInit {
     this.currentIPPORT.getValue().subscribe((value) => {
       this.apiError = value;
     });
+
 
 
 
