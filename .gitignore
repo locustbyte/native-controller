@@ -5,6 +5,7 @@
 *.sw[mnpcod]
 .tmp
 *.tmp
+*.zip
 *.tmp.*
 *.sublime-project
 *.sublime-workspace
